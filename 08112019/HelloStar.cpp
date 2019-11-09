@@ -24,7 +24,7 @@ int main ()
 {
     glfwInit();
 
-    GLFWwindow* window = initWindowAndContext(800,600, "Hello Polygons. This is Louis, polygons");
+    GLFWwindow* window = initWindowAndContext(800,600, "Experimenting with EBOs");
 
     unsigned int shaderProgram = compileShadersCreateProgram(vertexShaderSource, fragmentShaderSource);
 
@@ -63,7 +63,7 @@ int main ()
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while (!glfwWindowShouldClose(window))
     {
