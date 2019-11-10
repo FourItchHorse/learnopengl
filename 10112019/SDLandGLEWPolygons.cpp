@@ -5,6 +5,7 @@
 #include<D:/source/include/SDL_opengl.h>
 #include <iostream>
 
+
 const GLchar* vertexShaderSource = R"glsl(#version 330 core 
 layout (location = 0) in vec3 position;
 void main()
@@ -13,10 +14,11 @@ gl_Position = vec4(position.x, position.y, position.z, 1.0);
 })glsl";
 
 const GLchar* fragmentShaderSource = R"glsl(#version 330 core
-out vec4 color;
+uniform vec3 polygonColor;
+out vec4 outColor;
 void main()
 {
-color = vec4(1.0,1.0,1.0,1.0);
+outColor = vec4(polygonColor,1.0);
  })glsl";
 
 int main (int argc, char *argv[]) 
@@ -56,7 +58,7 @@ int main (int argc, char *argv[])
     GLuint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
-    glBindFragDataLocation(shaderProgram, 0, "color");
+    glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
 
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
@@ -64,9 +66,6 @@ int main (int argc, char *argv[])
     
     std::cout<< "Linking shaders to program...\n" << buffer;
 
-    glDeleteProgram(shaderProgram);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
     
     GLuint vao, vbo, ebo;
     glGenBuffers(1, &ebo);
@@ -97,27 +96,33 @@ int main (int argc, char *argv[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*) 0);
-    glEnableVertexAttribArray(0);
+    GLint uniColor = glGetUniformLocation(shaderProgram, "polygonColor");
 
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
     printf("OpenGL error: %u\n", glGetError());
 
     SDL_Event windowEvent;
     while(true) 
     {   
         
+        int x, y;
         if(SDL_PollEvent(&windowEvent)) 
         {
             if(windowEvent.type == SDL_QUIT) { break; }
-            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }        
+            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; } 
+            SDL_GetMouseState(&x, &y);        
         }
 
         glClearColor(0.0f,0.0f,0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glUniform3f(uniColor, x, y, 0.0f);
         
         glUseProgram(shaderProgram);
-        glBindVertexArray(vao);
+        glBindVertexArray(vao);     //this must be a glew thing since I didn't have to rebind vao with glad 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
@@ -125,8 +130,16 @@ int main (int argc, char *argv[])
         SDL_GL_SwapWindow(window);
     }
 
-
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    
+    glDeleteProgram(shaderProgram);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    
     glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
     
     glDeleteVertexArrays(1, &vao);
 
