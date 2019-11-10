@@ -24,9 +24,6 @@ int main (int argc, char *argv[])
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
 
-
-    printf("%u\n", vertexBuffer);
-
     
     SDL_Event windowEvent;
     while(true) 
@@ -34,8 +31,7 @@ int main (int argc, char *argv[])
         if(SDL_PollEvent(&windowEvent)) 
         {
             if(windowEvent.type == SDL_QUIT) { break; }
-            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }
-            
+            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }        
         }
         SDL_GL_SwapWindow(window);
     }
