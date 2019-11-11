@@ -4,7 +4,7 @@
 #include<D:/source/include/SDL.h>
 #include<D:/source/include/SDL_opengl.h>
 #include <iostream>
-
+#include <cmath>
 
 const GLchar* vertexShaderSource = R"glsl(#version 330 core 
 layout (location = 0) in vec2 position;
@@ -19,9 +19,10 @@ gl_Position = vec4(position.x, position.y, 0.0, 1.0);
 const GLchar* fragmentShaderSource = R"glsl(#version 330 core
 in vec3 Color;
 out vec4 outColor;
+uniform vec3 scalar;
 void main()
 {
-outColor = vec4(Color,1.0);
+outColor = vec4((Color.x * scalar.x), (Color.y * scalar.y), (Color.z * scalar.z), 1.0);
  })glsl";
 
 int main (int argc, char *argv[]) 
@@ -76,12 +77,12 @@ int main (int argc, char *argv[])
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] {
-        -0.1, 1.0, 0.5, 0, 0, //0, //top corner
-        -0.7,0.25, 0.0, 0.5, 0, //0,//upper left corner
-        0.6, 0.35, 0.0, 0.0, 0.5, //0, //upper right corner
-        -0.45,-0.7, 1.0, 0.0, 0,//0,  //lower left corner
-        0.45, -0.7, 0.0, 1.0, 0.0,//0, //lower right corner
-        0.2, -0.1,  0.0, 0.0, 1.0//0, //pinch point betweeen upper right and lower left corner
+        -0.1, 1.0, 1.0, 0.7, 0, //0, //top corner
+        -0.7,0.25, 1.0, 0.7, 0, //0,//upper left corner
+        0.6, 0.35, 1.0, 0.7, 0.5, //0, //upper right corner
+        -0.45,-0.7, 0.25, 0.35, 0,//0,  //lower left corner
+        0.45, -0.7, 0.5, 1.0, 0.0,//0, //lower right corner
+        0.2, -0.1,  1.0, 0.5, 1.0//0, //pinch point betweeen upper right and lower left corner
     };
     
 
@@ -109,21 +110,27 @@ int main (int argc, char *argv[])
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) (2 * sizeof(float)));
     
+    GLint scalar = glGetUniformLocation(shaderProgram, "scalar");
+
     printf("OpenGL error: %u\n", glGetError());
 
     SDL_Event windowEvent;
     while(true) 
     {   
-        
+        int x, y;        
         if(SDL_PollEvent(&windowEvent)) 
         {
             if(windowEvent.type == SDL_QUIT) { break; }
-            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }       
+            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }  
+            SDL_GetMouseState(&x, &y);
+            printf("%u   %u\r", x, y);     
         }
 
         glClearColor(0.0f,0.0f,0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     
+        glUniform3f(scalar, static_cast<float>(x) / 500.0f, static_cast<float>(y) / 500.0f, static_cast<float>(x + y) / 500.0f);
+
         glUseProgram(shaderProgram);
         glBindVertexArray(vao);     //this must be a glew thing since I didn't have to rebind vao with glad 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
