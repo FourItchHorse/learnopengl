@@ -5,7 +5,7 @@
 #include<D:\source\include\SDL.h>
 #include<D:\source\include\SDL_opengl.h>
 #include <iostream>
-#include "Shader.hpp"
+#include "ExampleShader.h"
 
 
 
@@ -23,7 +23,7 @@ int main (int argc, char *argv[])
     glewExperimental = GL_TRUE;
     glewInit();
 
-    Shader ourShader = Shader("D:/source/repos/c++/learnopengl.com_LearnOpenGL/1112112019/myFirstVertexFile.vs", "D:/source/repos/c++/learnopengl.com_LearnOpenGL/1112112019/myFirstFragFile.fs");
+    Shader ourShader("D:/source/repos/c++/learnopengl.com_LearnOpenGL/1112112019/myFirstVertexFile.vs", "D:/source/repos/c++/learnopengl.com_LearnOpenGL/1112112019/myFirstFragFile.fs");
 
     GLuint vao, vbo, ebo;
     glGenBuffers(1, &ebo);
