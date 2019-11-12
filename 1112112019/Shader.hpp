@@ -1,7 +1,8 @@
+#define GLEW_STATIC
+#include <D:/source/include/glew.h>
+
 #ifndef SHADER_H
 #define SHADER_H
-
-#include <D:/source/include/glew.h>
 
 #include <string>
 #include <fstream>
@@ -16,12 +17,15 @@ class Shader
         unsigned int ID;
         Shader(const char* vertexPath, const char* fragmentPath);
         void use();
-        void setBool(std::string &name, bool value) const;
-        void setInt (std::string &name, int value) const;
-        void setFloat(std::string &name, float value) const;
+           void setBool(std::string &name, bool value) const;
+           void setInt (std::string &name, int value) const;
+          void setFloat(std::string &name, float value) const;
+        void setVector2(std::string &name, float value1, float value2) const; //these weren't in the tutorial , but added them for completion's sake
+        void setVector3(std::string &name, float value1, float value2, float value3) const;
+        void setVector4(std::string &name, float value1, float value2, float value3, float value4) const;
 };
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) 
+    Shader::Shader(const char* vertexPath, const char* fragmentPath) 
 {
     std::string vertexCode;
     std::string fragmentCode;
@@ -36,13 +40,15 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
         fShaderFile.open(fragmentPath);
         std::stringstream vShaderStream, fShaderStream;
         vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderStream.rdbuf();
+        std::cout<<"Writing to vertex shader stream..."<<std::endl;
+        fShaderStream << fShaderFile.rdbuf();
+        std::cout<<"Writing to fragment shader stream..."<<std::endl;
         vShaderFile.close();
         fShaderFile.close();
         vertexCode = vShaderStream.str();
         fragmentCode= fShaderStream.str();
     }
-    catch (std::fstream::failure e)
+    catch(std::ifstream::failure)
     {   
         std::cout<<"ERROR:SHADER FILE NOT SUCCESSFULLY READ"<<std::endl;
     }
@@ -66,6 +72,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     ID = glCreateProgram();
     glAttachShader(ID, vertex);
     glAttachShader(ID, fragment);
+    //glBindFragDataLocation(ID, 0, ); this line was included in open.gl but I'm not sure how to implement it here
     glLinkProgram(ID);
     glGetProgramInfoLog(ID, GL_LINK_STATUS, &status, buffer);
     std::cout << "Linking shader program...\n" << buffer;
@@ -80,17 +87,31 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
         glUseProgram(ID);
     }
 
-    void Shader::setBool(const std::string name, bool value) 
+    void Shader::setBool(std::string &name, bool value) const 
     {
-        glGetUniformLocation();
+        glUniform1i(glGetUniformLocation(ID, name.c_str()), (int) value);
     }
-    void Shader::setInt(const std::string name, int value) 
+    void Shader::setInt(std::string &name, int value) const
     {
+        glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    }
+    void Shader::setFloat(std::string &name, float value) const
+    {
+        glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    }
+    void Shader::setVector2(std::string &name, float value1, float value2) const 
+    {
+        glUniform2f(glGetUniformLocation(ID, name.c_str()), value1, value2);
+    }
+    void Shader::setVector3(std::string &name, float value1, float value2, float value3) const 
+    {
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), value1, value2, value3);
+    }
+    void Shader::setVector4(std::string &name, float value1, float value2, float value3, float value4) const 
+    {
+        glUniform4f(glGetUniformLocation(ID, name.c_str()), value1, value2, value3, value4);
+    }
 
-    }
-    void Shader::setFloat(const std::string name, float value) 
-    {
 
-    }
 
 #endif
