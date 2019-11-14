@@ -1,25 +1,28 @@
 #define GLEW_STATIC
 #include<D:/source/include/glew.h>
 #define SDL_MAIN_HANDLED
+#define main SDL_main
 #include<D:/source/include/SDL.h>
 #include<D:/source/include/SDL_opengl.h>
 #include <iostream>
-#include <cmath>
 
 
 const GLchar* vertexShaderSource = R"glsl(#version 330 core 
-layout (location = 0) in vec3 position;
+layout (location = 0) in vec2 position;
+in vec3 color;
+out vec3 Color;
 void main()
 {
-gl_Position = vec4(position.x, position.y, position.z, 1.0);
+Color = color;
+gl_Position = vec4(position.x, position.y, 0.0, 1.0);
 })glsl";
 
 const GLchar* fragmentShaderSource = R"glsl(#version 330 core
-uniform vec3 polygonColor;
+in vec3 Color;
 out vec4 outColor;
 void main()
 {
-outColor = vec4(polygonColor,1.0);
+outColor = vec4(Color,1.0);
  })glsl";
 
 int main (int argc, char *argv[]) 
@@ -68,25 +71,26 @@ int main (int argc, char *argv[])
     std::cout<< "Linking shaders to program...\n" << buffer;
 
     
-    GLuint vao, vbo, ebo;
+    GLuint vao, vbo, ebo, tex;
     glGenBuffers(1, &ebo);
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
+    glGenTextures(1, &tex);
 
     GLfloat vertices[] {
-        -0.1,1.0, 0, //top corner
-        -0.7,0.25, 0,//upper left corner
-        0.6, 0.35,  0, //upper right corner
-        -0.45,-0.7, 0,  //lower left corner
-        0.45, -0.7, 0, //lower right corner
-        0.2, -0.1, 0, //pinch point betweeen upper right and lower left corner
+        -0.1, 1.0, 1.0, 0, 0, //top corner
+        -0.7,0.25, 0.0, 1.0, 0, //upper left corner
+        0.6, 0.35, 0.0, 0.0, 1.0, //upper right corner
+        -0.45,-0.7, 1.0, 0, 0, //lower left corner
+        0.45, -0.7, 1.0, 1.0, 0.0, //lower right corner
+        0.2, -0.1,  1.0, 1.0, 1.0 //pinch point betweeen upper right and lower left corner
     };
     
 
     GLuint elements[] {
-     0, 3, 5, 
+     4, 1, 5, 
      2, 1, 5,
-     4, 1, 5
+     0, 3, 5, 
     };
     
     glBindVertexArray(vao);
@@ -97,11 +101,14 @@ int main (int argc, char *argv[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
-    GLint uniColor = glGetUniformLocation(shaderProgram, "polygonColor");
 
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) (2 * sizeof(float)));
     
     printf("OpenGL error: %u\n", glGetError());
 
@@ -109,21 +116,15 @@ int main (int argc, char *argv[])
     while(true) 
     {   
         
-        int x, y;
         if(SDL_PollEvent(&windowEvent)) 
         {
             if(windowEvent.type == SDL_QUIT) { break; }
-            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; } 
-            SDL_GetMouseState(&x, &y);        
+            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }       
         }
 
         glClearColor(0.0f,0.0f,0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        float mouseX = static_cast<float>(x);
-        float mouseY = static_cast<float>(y);
-        glUniform3f(uniColor, mouseX/ 1000.0f,  mouseY/ 1000.0f, 0.0f);
-        
+    
         glUseProgram(shaderProgram);
         glBindVertexArray(vao);     //this must be a glew thing since I didn't have to rebind vao with glad 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

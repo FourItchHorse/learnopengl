@@ -23,7 +23,7 @@ int main (int argc, char *argv[])
     glewExperimental = GL_TRUE;
     glewInit();
 
-    Shader ourShader("D:/source/repos/c++/learnopengl.com_LearnOpenGL/1112112019/myFirstVertexFile.vs", "D:/source/repos/c++/learnopengl.com_LearnOpenGL/1112112019/myFirstFragFile.fs");
+    Shader ourShader("myFirstVertexFile.vs", "myFirstFragFile.fs");
 
     GLuint vao, vbo, ebo;
     glGenBuffers(1, &ebo);
@@ -61,6 +61,8 @@ int main (int argc, char *argv[])
     glEnableVertexAttribArray(1);
 
     
+    printf("OpenGL error: %u\n", glGetError());
+
     glBindVertexArray(vao);
 
     SDL_Event windowEvent;

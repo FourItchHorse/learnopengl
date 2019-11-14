@@ -11,6 +11,7 @@
 
 
 
+
 class Shader 
 {
     public:
@@ -27,6 +28,8 @@ class Shader
 
     Shader::Shader(const char* vertexPath, const char* fragmentPath) 
 {
+    glewExperimental = GL_TRUE;
+    glewInit();
     std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vShaderFile;
