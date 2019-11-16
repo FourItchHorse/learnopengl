@@ -1,9 +1,9 @@
 #define GLEW_STATIC
-#include<D:/source/include/glew.h>
+#include<GL/glew.h>
 #define SDL_MAIN_HANDLED
 
-#include<D:/source/include/SDL.h>
-#include<D:/source/include/SDL_opengl.h>
+#include<SDL2/SDL.h>
+#include<SDL2/SDL_opengl.h>
 #include <iostream>
 #include <cmath>
 
@@ -81,12 +81,12 @@ int main (int argc, char *argv[])
     glGenTextures(1, &tex);
 
     GLfloat vertices[] {
-        -0.1, 1.0, 0.25, 0, 0, //top corner
-        -0.7,0.25, 0.0, 0.5, 0, //upper left corner
-        0.6, 0.35, 0.0, 0.0, 0.75, //upper right corner
-        -0.45,-0.7, 0.25, 0, 0, //lower left corner
-        0.45, -0.7, 0.25, 0.5, 0.0, //lower right corner
-        0.2, -0.1,  0.25, 0.5, 0.75 //pinch point betweeen upper right and lower left corner
+        -0.1, 1.0,  1.0, 0, 0, //top corner
+        -0.7,0.25,  0.0, 1.0, 0, //upper left corner
+        0.6, 0.35,  0.0, 0.0, 1.0, //upper right corner
+        -0.45,-0.7, 0.0, 0.0, 1.0, //lower left corner
+        0.45, -0.7, 0.25, 1.0, 0.0, //lower right corner
+        0.2, -0.1,  1.0, 0.5, 0.75 //pinch point betweeen upper right and lower left corner
     };
     
 
@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
 
         float mouseX = static_cast<double>(x);
         float mouseY = static_cast<double>(y);
-        float denominator = 10000.0f;
+        float denominator = 5000.0f;
         float hypotenuse = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
         glUniform3f(glGetUniformLocation(shaderProgram, "mouse"), mouseX / denominator, mouseY/ denominator, hypotenuse/ denominator);
         glUseProgram(shaderProgram);
@@ -151,7 +151,7 @@ int main (int argc, char *argv[])
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-        printf("R: %u G: %u B %u \r", mouseX, mouseY, hypotenuse);
+        printf("R: %f G: %f B %f \r", mouseX, mouseY, hypotenuse);
 
         SDL_GL_SwapWindow(window);
     }
