@@ -4,7 +4,13 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+
+#include <SOIL/SOIL.h>
+
 #include <iostream>
+
+
+
 
 const GLchar* vertexShaderSource = R"glsl(
     #version 330 core
@@ -122,15 +128,22 @@ int main (int argc, char *argv[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
  
-    glBindTexture(GL_TEXTURE_2D, tex);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    
+    
+    glBindTexture(GL_TEXTURE_2D, tex);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+
+    int width, height;
+    unsigned char *data = SOIL_load_image("img.png", &width, &height, 0, SOIL_LOAD_RGB);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    SOIL_free_image_data(data);
+    
     
 
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
