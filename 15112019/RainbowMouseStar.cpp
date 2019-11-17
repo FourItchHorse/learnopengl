@@ -109,13 +109,6 @@ int main (int argc, char *argv[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
-    glBindTexture(GL_TEXTURE_2D, tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, 0, GL_FLOAT, pixels);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glGenerateMipmap(GL_TEXTURE_2D);
 
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
@@ -147,7 +140,7 @@ int main (int argc, char *argv[])
         float hypotenuse = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
         glUniform3f(glGetUniformLocation(shaderProgram, "mouse"), mouseX / denominator, mouseY/ denominator, hypotenuse/ denominator);
         glUseProgram(shaderProgram);
-        glBindVertexArray(vao);     //this must be a glew thing since I didn't have to rebind vao with glad 
+        glBindVertexArray(vao);     
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);

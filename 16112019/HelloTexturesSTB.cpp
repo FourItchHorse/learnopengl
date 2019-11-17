@@ -35,7 +35,7 @@ const GLchar * fragmentShaderSource = R"glsl(
 
     void main() 
     {
-        outColor = texture(tex, TexCoord) * vec4(Color, 1.0);
+        outColor = texture(tex, TexCoord) / vec4(Color, 1.0);
     }
 )glsl";
 
@@ -111,19 +111,14 @@ int main (int argc, char *argv[])
     GLuint elements[] {
         0,1,3,
         1,2,3
-    };
+    }; 
  
     float pixels[] = {
-    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f, 
-    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,  0.0f, 0.0f, 0.0f, 
+    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
+    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,  0.0f, 0.0f, 0.0f,
+    1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
+    0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,  0.0f, 0.0f, 0.0f,
     };
 
     glBindVertexArray(vao);
@@ -134,19 +129,17 @@ int main (int argc, char *argv[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
  
-    
-    
-    GLuint tex;
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
+    GLuint textures[2];
+    glGenTextures(2, textures);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("Textures/cat.png", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("Textures/container.jpg", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -155,12 +148,13 @@ int main (int argc, char *argv[])
     else    
     {
         
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 8, 0, GL_RGB, GL_FLOAT, pixels);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 3, 3, 0, GL_RGB, GL_FLOAT, pixels);
         glGenerateMipmap(GL_TEXTURE_2D);
         std::cout << "Failed to load texture." << std::endl;
     }
-    
     stbi_image_free(data);
+
+    
     
 
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
@@ -180,12 +174,10 @@ int main (int argc, char *argv[])
     SDL_Event windowEvent;
     while(true) 
     {   
-        int x, y;
         if(SDL_PollEvent(&windowEvent)) 
         {
             if(windowEvent.type == SDL_QUIT) { break; }
-            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }
-            SDL_GetMouseState(&x, &y);       
+            if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE){  break; }   
         }
 
         glClearColor(0.0f,0.0f,0.0f, 1.0f);
@@ -210,7 +202,7 @@ int main (int argc, char *argv[])
     
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
-    glDeleteTextures(1, &tex);
+    glDeleteTextures(2, textures);
     
     glDeleteVertexArrays(1, &vao);
 
