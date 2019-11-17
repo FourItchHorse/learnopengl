@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
+#include <cmath>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <STB\stb_image.h>
@@ -31,6 +32,7 @@ const GLchar* fragmentShaderSource = R"glsl(
     uniform sampler2D tex1;
     uniform sampler2D tex2;
     uniform float texWeight;
+    uniform float tanTime;
     in vec3 Color;
     in vec2 TexCoord;
     out vec4 outColor;
@@ -38,8 +40,9 @@ const GLchar* fragmentShaderSource = R"glsl(
     void main() 
     {
         vec4 colTex1 = texture(tex1, TexCoord);
-        vec4 colTex2 = texture(tex2, TexCoord);
-        outColor = mix(colTex1, colTex2, texWeight);
+        vec4 colTex2 = texture(tex2, TexCoord * tanTime);
+        outColor = vec4(1 - Color, 1);
+        outColor = mix(colTex1, colTex2, texWeight) * outColor;
     }
 )glsl";
 
@@ -129,8 +132,8 @@ int main(int argc, char *argv[])
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     GLint width, height, nrChannels;
     unsigned char* data = stbi_load("Textures/container.jpg", &width, &height, &nrChannels, 0);
@@ -151,8 +154,8 @@ int main(int argc, char *argv[])
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
     data = stbi_load("Textures/cat.png", &width, &height, &nrChannels, 0);
     if (!data)
@@ -181,10 +184,11 @@ int main(int argc, char *argv[])
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
 
     //render loop
-    printf("OPENGL ERROR: %ux\n", glGetError());
+    printf("OPENGL ERROR: %u\n", glGetError());
     SDL_Event windowEvent;
     float texMix = 0.0f;
-    float texLimit = 1.0f;
+    float texLimit = 1.0;
+    float tanTime;
     while (true)
     {
         if(SDL_PollEvent(&windowEvent)) 
@@ -207,9 +211,13 @@ int main(int argc, char *argv[])
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUniform1f(glGetUniformLocation(shaderProgram, "texWeight"), texMix);
-        printf("WEIGHT: %f\r", texMix);
-
+        glUniform1f(glGetUniformLocation(shaderProgram, "tanTime"), tanTime);
+        tanTime = tan(static_cast<float>(SDL_GetTicks()) / (texMix * 4096.0f));
+        printf("WEIGHT: %f TAN TIME: %f\r", texMix, tanTime);
+        glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0); 
+        glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
         glUseProgram(shaderProgram);
+
         glBindVertexArray(vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
