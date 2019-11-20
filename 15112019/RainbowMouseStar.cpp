@@ -137,7 +137,7 @@ int main (int argc, char *argv[])
         float mouseX = static_cast<double>(x);
         float mouseY = static_cast<double>(y);
         float denominator = 5000.0f;
-        float hypotenuse = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
+        float hypotenuse = std::sqrt(std::pow(x, 2) + (5.0f/3.0f) * std::pow(y, 2));
         glUniform3f(glGetUniformLocation(shaderProgram, "mouse"), mouseX / denominator, mouseY/ denominator, hypotenuse/ denominator);
         glUseProgram(shaderProgram);
         glBindVertexArray(vao);     

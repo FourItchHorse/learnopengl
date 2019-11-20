@@ -4,25 +4,36 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include <iostream>
-#include <cmath>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <STB\stb_image.h>
+
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <iostream>
+
 
 const GLchar* vertexShaderSource = R"glsl(
     #version 330 core
     in vec2 position;
     in vec3 color;
     in vec2 texcoord;
+    in vec2 texcoord2;
     out vec3 Color;
     out vec2 TexCoord;
+    out vec2 TexCoord2;
+    uniform mat4 transform;
 
     void main() 
     {
         Color = color;
         TexCoord = texcoord;
-        gl_Position = vec4(position.x, position.y, 0.0, 1.0);
+        TexCoord2 = texcoord2;
+        
+        gl_Position =  transform * vec4(position.x, position.y, 0.0, 1.0);
     }
 
 )glsl";
@@ -32,17 +43,16 @@ const GLchar* fragmentShaderSource = R"glsl(
     uniform sampler2D tex1;
     uniform sampler2D tex2;
     uniform float texWeight;
-    uniform float tanTime;
     in vec3 Color;
     in vec2 TexCoord;
+    in vec2 TexCoord2;
     out vec4 outColor;
 
     void main() 
     {
         vec4 colTex1 = texture(tex1, TexCoord);
-        vec4 colTex2 = texture(tex2, TexCoord * tanTime);
-        outColor = vec4(1 - Color, 1);
-        outColor = mix(colTex1, colTex2, texWeight) * outColor;
+        vec4 colTex2 = texture(tex2, TexCoord2);
+        outColor = mix(colTex1, colTex2, texWeight) * vec4(Color, 1.0);
     }
 )glsl";
 
@@ -55,7 +65,7 @@ int main(int argc, char *argv[])
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-    SDL_Window* window = SDL_CreateWindow("Mixing textures", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
+    SDL_Window* window = SDL_CreateWindow("Transformations with GLM", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(window);
 
     glewExperimental = GL_TRUE;
@@ -88,6 +98,8 @@ int main(int argc, char *argv[])
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
     glGetProgramInfoLog(shaderProgram, 512, NULL, buffer);
     std::cout << "SHADER PROGRAM LINK STATUS: "<<status<< " SHADER PROGRAM INFO LOG\n " << buffer;
+
+    glUseProgram(shaderProgram);
     
     //create and bind to vertexArrayObject, vertexBufferObject, elementBufferObject
 
@@ -97,10 +109,10 @@ int main(int argc, char *argv[])
     glGenBuffers(1, &vbo);
     GLfloat vertices[] 
     { //Position    Color         TexCoords
-     -0.5, 0.5,   1.0, 0.0, 0.0,  0.0, 0.0,
-      0.5, 0.5,   0.0, 1.0, 0.0,  1.0, 0.0,
-      0.5,-0.5,   0.0, 0.0, 1.0,  1.0, 1.0,
-     -0.5,-0.5,   1.0, 1.0, 1.0,  0.0, 1.0, 
+     -0.5, 0.5,   1.0, 0.0, 0.0,  0.0, 0.0,  0.0, 0.0,
+      0.5, 0.5,   0.0, 1.0, 0.0,  1.0, 0.0,  5.0, 0.0,
+      0.5,-0.5,   0.0, 0.0, 1.0,  1.0, 1.0,  5.0, 10.0,
+     -0.5,-0.5,   1.0, 1.0, 1.0,  0.0, 1.0,  0.0, 10.0,
     };
 
     GLuint indices[] 
@@ -173,22 +185,32 @@ int main(int argc, char *argv[])
     //create and enable vertexAttrib arrays from in variables in shaderProgram
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
-
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) 0);
+    printf("POSITION ATTRIB OPENGL ERROR: %u\n", glGetError());
+   
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
-    glVertexAttribPointer(colAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
+    glVertexAttribPointer(colAttrib, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
+    printf("COLOR ATTRIB OPENGL ERROR: %u\n", glGetError());
 
+    
     GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
     glEnableVertexAttribArray(texAttrib);
-    glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
-
+    glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) (5 * sizeof(GLfloat)));
+    printf("TEXCOORD1 ATTRIB OPENGL ERROR: %u\n", glGetError());
+    
+    
+    GLint texAttrib2 = glGetAttribLocation(shaderProgram, "texcoord2");
+    glEnableVertexAttribArray(texAttrib2);
+    glVertexAttribPointer(texAttrib2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*) (7 * sizeof(GLfloat)));
+    printf("TEXCOORD2 ATTRIB OPENGL ERROR: %u\n", glGetError()); 
+    
     //render loop
     printf("OPENGL ERROR: %u\n", glGetError());
     SDL_Event windowEvent;
-    float texMix = 0.0f;
+    float texMix = 0.5f;
     float texLimit = 1.0;
-    float tanTime;
+    float time;
     while (true)
     {
         if(SDL_PollEvent(&windowEvent)) 
@@ -211,9 +233,21 @@ int main(int argc, char *argv[])
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUniform1f(glGetUniformLocation(shaderProgram, "texWeight"), texMix);
-        glUniform1f(glGetUniformLocation(shaderProgram, "tanTime"), tanTime);
-        tanTime = tan(static_cast<float>(SDL_GetTicks()) / (texMix * 4096.0f));
-        printf("WEIGHT: %f TAN TIME: %f\r", texMix, tanTime);
+        
+        time = static_cast<float>(SDL_GetTicks())/ 1024.0f;
+        GLint uniTransform = glGetUniformLocation(shaderProgram, "transform");
+        
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::rotate(
+            transform,
+            time * glm::radians(180.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f)
+        );
+        glUniformMatrix4fv(uniTransform, 1, GL_FALSE, glm::value_ptr(transform));
+
+
+
+        printf("WEIGHT: %f TIME: %f\r", texMix, time);
         glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0); 
         glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
         glUseProgram(shaderProgram);
