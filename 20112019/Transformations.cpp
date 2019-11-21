@@ -43,6 +43,7 @@ const GLchar* fragmentShaderSource = R"glsl(
     uniform sampler2D tex1;
     uniform sampler2D tex2;
     uniform float texWeight;
+    uniform mat4 transform;
     in vec3 Color;
     in vec2 TexCoord;
     in vec2 TexCoord2;
@@ -52,7 +53,7 @@ const GLchar* fragmentShaderSource = R"glsl(
     {
         vec4 colTex1 = texture(tex1, TexCoord);
         vec4 colTex2 = texture(tex2, TexCoord2);
-        outColor = mix(colTex1, colTex2, texWeight) * vec4(Color, 1.0);
+        outColor = mix(colTex1, colTex2, texWeight) * (transform * vec4(Color, 1.0));
     }
 )glsl";
 
@@ -208,8 +209,8 @@ int main(int argc, char *argv[])
     //render loop
     printf("OPENGL ERROR: %u\n", glGetError());
     SDL_Event windowEvent;
-    float texMix = 0.5f;
-    float texLimit = 1.0;
+    float inputFloat = 0.5f;
+    float floatLimit = 360.0f;
     float time;
     while (true)
     {
@@ -219,35 +220,39 @@ int main(int argc, char *argv[])
             if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE) { break; }
             if (windowEvent.type == SDL_KEYDOWN) 
             {
-                if (texMix < texLimit && windowEvent.key.keysym.sym == SDLK_UP)
+                if (inputFloat < floatLimit && windowEvent.key.keysym.sym == SDLK_UP)
                 {
-                    texMix += 1.0f/512.0f;
+                    inputFloat += 1.0f/512.0f;
                 }
-                else if (texMix >= 0 && windowEvent.key.keysym.sym == SDLK_DOWN)
+                else if (inputFloat >= 0 && windowEvent.key.keysym.sym == SDLK_DOWN)
                 {
-                    texMix -= 1.0f/512.0f;
+                    inputFloat -= 1.0f/512.0f;
                 }
             }
         }
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUniform1f(glGetUniformLocation(shaderProgram, "texWeight"), texMix);
+        glUniform1f(glGetUniformLocation(shaderProgram, "texWeight"), inputFloat);
         
         time = static_cast<float>(SDL_GetTicks())/ 1024.0f;
         GLint uniTransform = glGetUniformLocation(shaderProgram, "transform");
         
-        glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::rotate(
-            transform,
-            time * glm::radians(180.0f),
+        glm::mat4 timeRotation = glm::mat4(1.0f);
+        timeRotation = glm::rotate(
+            timeRotation,
+            time * glm::radians(90.0f),
             glm::vec3(0.0f, 0.0f, 1.0f)
         );
-        glUniformMatrix4fv(uniTransform, 1, GL_FALSE, glm::value_ptr(transform));
+        glm::mat4 inputRotation = glm::mat4(1.0f);
+        inputRotation = glm::rotate(
+            inputRotation,
+            inputFloat * glm::radians(180.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f)
+        );
+        glUniformMatrix4fv(uniTransform, 1, GL_FALSE, glm::value_ptr(timeRotation));
 
-
-
-        printf("WEIGHT: %f TIME: %f\r", texMix, time);
+        printf("WEIGHT: %f TIME: %f\r", inputFloat, time);
         glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0); 
         glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
         glUseProgram(shaderProgram);

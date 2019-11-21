@@ -29,10 +29,11 @@ const GLchar* vertexShaderSource = R"glsl(
 
     void main() 
     {
-        gl_Position = vec4(position.x, position.y, 0.0, 1.0) * transform;
         Color = color;
         Texcoord1 = texcoord1;
         Texcoord2 = texcoord2;
+
+        gl_Position = transform * vec4(position.x, position.y, 0.0, 1.0);
     }
 
 )glsl";
@@ -42,6 +43,7 @@ const GLchar* fragmentShaderSource = R"glsl(
     uniform sampler2D tex1;
     uniform sampler2D tex2;
     uniform float texWeight;
+    uniform mat4 transform;
     in vec3 Color;
     in vec2 Texcoord1;
     in vec2 Texcoord2;
@@ -51,13 +53,12 @@ const GLchar* fragmentShaderSource = R"glsl(
     {
         vec4 colTex1 = texture(tex1, Texcoord1);
         vec4 colTex2 = texture(tex2, Texcoord2);
-        outColor = vec4(Color, 1);
-        outColor = mix(colTex1, colTex2, texWeight);
+        outColor = mix(colTex1, colTex2, 0.5) * (transform * vec4(Color, 1));
     }
 
 )glsl";
 
-int main() 
+int main(int argc, char *argv[]) 
 {
     //Init, set up SDL_GL settings, window and context 
     SDL_Init(SDL_INIT_VIDEO);
@@ -104,21 +105,19 @@ int main()
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
     glGetProgramInfoLog(shaderProgram, 512, NULL, buffer);
     std::cout << "SHADER PROGRAM LINK STATUS: " << status << " SHADER PROGRAM INFO LOG:\n" << buffer;
+    glUseProgram(shaderProgram);
     printf("SHADER PROGRAM OPENGL ERROR: %u\n", glGetError());
     
     //create vertex array objects, vertex buffer objects, element buffer objects, texture objects and data for all
     GLuint vao, vbo, ebo, textures[2];
     glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &ebo);
-    glGenBuffers(1, &vbo);
-    glGenTextures(2, textures);
     //create data for objects
     GLfloat vertices[] {
         //Position      Color      TexCoords1   TexCoords2
         -0.5, 0.5,  1.0, 0.0, 0.0,  0.0, 0.0,   0.0, 0.0,
-         0.5, 0.5,  1.0, 1.0, 0.0,  1.0, 0.0,   1.0, 0.0,
-        0.5, -0.5,  1.0, 1.0, 1.0,  1.0, 1.0,   1.0, 1.0,
-        -0.5, -0.5, 1.0, 1.0, 0.0,  0.0, 1.0,   0.0, 1.0
+         0.5, 0.5,  1.0, 1.0, 0.0,  1.0, 0.0,   5.0, 0.0,
+        0.5, -0.5,  1.0, 1.0, 1.0,  1.0, 1.0,   5.0, 10.0,
+        -0.5, -0.5, 1.0, 1.0, 0.0,  0.0, 1.0,   0.0, 10.0
     };
 
     GLuint indices[]
@@ -130,16 +129,20 @@ int main()
     //bind and add data to array and buffer objects. Create and add data to texture objects
     glBindVertexArray(vao);
     
+    
+    glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     printf("WRITNG TO VBO OPENGL ERROR: %u\n", glGetError());
     
 
+    glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     printf("WRITING TO EBO OPENGL ERROR: %u\n", glGetError());
     
-
+    
+    glGenTextures(2, textures);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures[0]);
     printf("BINDING TO TEXTURE1 OPENGL ERROR: %u\n", glGetError());
@@ -163,6 +166,7 @@ int main()
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     stbi_image_free(data);
+    glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0);
     printf("WRITING TO TEXTURE1 OPENGL ERROR: %u\n", glGetError());
     
     glActiveTexture(GL_TEXTURE1);
@@ -184,6 +188,7 @@ int main()
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     stbi_image_free(data);
+    glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
     printf("WRITING TO TEXTURE2 OPENGL ERROR: %u\n", glGetError());
     
     //create and enable vertexAttrib for position, color and texcoords ("in" values of shader program)
@@ -235,11 +240,16 @@ int main()
         float time = SDL_GetTicks()/ 1024.0f;
         GLint uniTransform = glGetUniformLocation(shaderProgram, "transform");
         glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::rotate(transform, glm::radians(time), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::rotate(
+        transform, 
+        time * glm::radians(90.0f), 
+        glm::vec3(0.0f, 0.0f, 1.0f)
+        );
 
-        glUniformMatrix4x3fv(uniTransform, 1, GL_FALSE, glm::value_ptr(transform));
+        glUniformMatrix4fv(uniTransform, 1, GL_FALSE, glm::value_ptr(transform));
         
         
+        printf("TIME: %f\r", time);
         glUniform1f(glGetUniformLocation(shaderProgram, "texWeight"), 0.5);
         glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0); 
         glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
