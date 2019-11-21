@@ -61,6 +61,15 @@
         "*.tcc": "cpp",
         "memory_resource": "cpp",
         "string_view": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "condition_variable": "cpp",
+        "ctime": "cpp",
+        "map": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "set": "cpp",
+        "thread": "cpp",
+        "unordered_set": "cpp",
+        "xtree": "cpp"
     }
 }
