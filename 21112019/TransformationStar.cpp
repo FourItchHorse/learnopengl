@@ -49,9 +49,9 @@ in vec2 TexCoord2;
 
 out vec4 outColor;
 
-
 uniform float time;
 uniform mat4 colorEffect;
+uniform mat4 texEffect;
 
 uniform sampler2D tex1;
 uniform sampler2D tex2;
@@ -59,8 +59,8 @@ uniform sampler2D tex2;
 void main () 
 {
     vec4 colTex1 = texture(tex1, TexCoord1);
-    vec4 colTex2 = texture(tex2, TexCoord2 + time);
-    outColor = mix(colTex1, colTex2, 0.5) * (colorEffect * vec4(Color, 1.0));
+    vec4 colTex2 = texture(tex2, TexCoord2 + time) * texEffect;
+    outColor = mix(colTex1, colTex2, 0.5) + (colorEffect * vec4(Color, 1.0));
 }
 )glsl";
 
@@ -125,11 +125,11 @@ int main (int argc, char *argv[])
        0.15, -0.25,   0.25, 0.25, 0.5,  0.75,  0.5,    3.75, 0.0,
        -0.65, -0.25,    1.0, 0.0, 1.0,   0.0,  0.5,    0.0,  5.0,
         0.65, -0.25,    0.0, 1.0, 0.0,   1.0,  0.5,    5.0,  5.0,
-      -0.25, 0.0,      1.0, 0.5, 1.0,  0.25,  0.0,    1.25, 0.0,
-       0.25, 0.0,    0.25, 0.5, 0.75, 0.75, 0.75,    3.75, 7.5,
-        0.0, 0.25,   0.75, 0.5, 0.25,  0.5, 0.75,    2.5,  7.5,
-        -0.45, 0.5,   0.5, 0.25, 0.75,  0.0,  1.0,    0.0,  10.0,
-         0.45, 0.5,   0.25, 0.75, 0.5,  1.0,  1.0,    5.0,  10.0
+       -0.20, 0.0,      1.0, 0.5, 1.0,  0.25,  0.0,    1.25, 0.0,
+        0.20, 0.0,    0.25, 0.5, 0.75, 0.75, 0.75,    3.75, 7.5,
+        0.0, 0.15,   0.75, 0.5, 0.25,  0.5, 0.75,    2.5,  7.5,
+       -0.45, 0.5,   0.5, 0.25, 0.75,  0.0,  1.0,    0.0,  10.0,
+        0.45, 0.5,   0.25, 0.75, 0.5,  1.0,  1.0,    5.0,  10.0
     };
 
     GLuint indices[] 
@@ -234,7 +234,7 @@ int main (int argc, char *argv[])
         glm::radians(45.0f), 
         800.0f/ 600.0f,
         1.0f,
-        10.0f
+        5.0f
     );
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
@@ -263,19 +263,27 @@ int main (int argc, char *argv[])
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(
         model, 
-        time * glm::radians(90.0f), 
-        glm::vec3(0.0f, 0.0f, 1.0f)
+        cos(time) * glm::radians(90.0f), 
+        glm::vec3(0.0, 0.0, 1.0)
         );
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 
+        GLint uniTex = glGetUniformLocation(shaderProgram, "texEffect");
+        glm::mat4 texture = glm::mat4(1.0f);
+        texture = glm::translate(
+            texture,
+            glm::vec3(time, time * time, time * time * time)
+        );
+        glUniformMatrix4fv(uniTex, 1, GL_FALSE, glm::value_ptr(texture));
+
         GLint colTrans = glGetUniformLocation(shaderProgram, "colorEffect");
         glm::mat4 color = glm::mat4(1.0f);
-        color = glm::rotate (
-            color,
-            sin(time), 
-            glm::vec3(1.0, 1.0, 0.0)
+        color = glm::translate (
+            color, 
+            glm::vec3(0.25 * sin(time), 0.5 * sin(time), sin(time))
         );
         glUniformMatrix4fv(colTrans, 1, GL_FALSE, glm::value_ptr(color));
+        
         
         GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
         glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
