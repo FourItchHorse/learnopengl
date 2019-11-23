@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <D:/source/include/glad.h>
-#include <D:/source/include/glfw3.h>
+#include <GLAD/glad.h>
+#include <GLFW/glfw3.h>
 
 unsigned int compileShadersCreateProgram(const char* vertexSource, const char* fragmentSource);
 GLFWwindow* initWindowAndContext(int width, int height, const char* title);

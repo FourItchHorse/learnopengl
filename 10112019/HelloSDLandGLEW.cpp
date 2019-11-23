@@ -1,8 +1,8 @@
 #define GLEW_STATIC
-#include<D:/source/include/glew.h>
+#include<GL/glew.h>
 #define SDL_MAIN_HANDLED
-#include<D:/source/include/SDL.h>
-#include<D:/source/include/SDL_opengl.h>
+#include<SDL2/SDL.h>
+#include<SDL2/SDL_opengl.h>
 #include <iostream>
 
 

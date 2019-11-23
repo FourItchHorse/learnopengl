@@ -1,5 +1,5 @@
 #include <D:/source/include/glad.h> //starting from scratch without copying to revise concepts
-#include <D:/source/include/glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 
