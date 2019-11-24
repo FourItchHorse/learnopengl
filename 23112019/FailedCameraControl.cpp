@@ -36,7 +36,7 @@ const GLchar* vertexShaderSource = R"glsl(
         Texcoord1 = texcoord1;
         Texcoord2 = texcoord2;
 
-        gl_Position =  model * vec4(position, 0.0, 1.0);
+        gl_Position =  proj * view *  model * vec4(position, 0.0, 1.0);
     }
 )glsl";
 const GLchar* fragmentShaderSource = R"glsl(
@@ -57,8 +57,8 @@ const GLchar* fragmentShaderSource = R"glsl(
     void main () 
     {
         vec4 colTex1 = texture(tex1, Texcoord1);
-        vec4 colTex2 = texture(tex2, Texcoord2) * texEffect;
-        outColor = mix(colTex1, colTex1, 0.5) * (vec4(Color, 1.0) * colorEffect);
+        vec4 colTex2 = texture(tex2, Texcoord2 + time);
+        outColor = mix(colTex1, colTex2, 0.5) * (vec4(Color, 1.0));
     }
 )glsl";
 
@@ -116,7 +116,7 @@ int main ()
        -0.45,   0.5,    1.0, 0.0, 0.0,   -1.0,  1.0,    -5.0, 10.0,
         0.45,   0.5,    0.0, 1.0, 0.0,    1.0,  1.0,     5.0, 10.0,
     };
-    GLfloat indices[]
+    GLuint indices[]
     {
         1, 0, 2,    3, 1, 5,
         7, 5, 1,    1, 2, 7, 
@@ -201,9 +201,25 @@ int main ()
     //set non-live uniforms
     //render loop
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
-    GLint uniView = glGetUniformLocation(shaderProgram, "view");
-    GLint uniModel = glGetUniformLocation(shaderProgram, "model");
+    glm::mat4 proj = glm::perspective(
+        glm::radians(45.0f), 
+        800.0f/ 600.0f,
+        1.0f,
+        5.0f
+        );
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
     
+    
+    GLint uniView = glGetUniformLocation(shaderProgram, "view");
+    glm::mat4 view = glm::lookAt(
+            glm::vec3(1.2f, 1.2f, 1.2f),
+            glm::vec3(0.0f, 0.0f, 0.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f)
+        ); 
+    GLint uniModel = glGetUniformLocation(shaderProgram, "model");
+        
+
+
     SDL_Event windowEvent;
     while (true)
     { 
@@ -226,7 +242,7 @@ int main ()
             if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE) {break;}
             SDL_GetMouseState(&x, &y);
         }
-        glClearColor(0.1, 0.2, 0.3, 1.0);
+        glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         float mouseX, mouseY;
@@ -234,26 +250,24 @@ int main ()
         mouseY = static_cast<float>(y);
         float mouseRotation = (mouseX - 400.0f)/400.0f;
         float mouseCameraAngle = (600 - mouseY) * 45.0f/600.0f;
-        float mouseCameraLookAt = (600 - mouseY) * 1.0f/600.0f;
+        float mouseCameraLookAt = (600 - mouseY) * 5.0f/600.0f;
 
+        glUniform1f(glGetUniformLocation(shaderProgram, "time"), mouseCameraAngle);
         
         glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0);
         glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
 
 
-        glm::mat4 proj = glm::perspective(
-            glm::radians(mouseCameraAngle),
-            800.0f/600.0f,
-            1.0f,
-            10.0f
-        );
+        GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
+    
         glUniformMatrix4fv(uniProj, 1, GL_TRUE, glm::value_ptr(proj));
 
         
+        GLint uniView = glGetUniformLocation(shaderProgram, "view");
         glm::mat4 view = glm::lookAt(
-            glm::vec3(1.2f, 1.2f, 1.2f),
+            glm::vec3(1.2f, (1.2f * mouseCameraLookAt), (1.2f * mouseCameraLookAt)),
             glm::vec3(0.0f, 0.0f, 0.0f),
-            glm::vec3(0.0f, 0.0f, mouseCameraLookAt)
+            glm::vec3(0.0f, 0.0f, 1.0f)
         );
         glUniformMatrix4fv(uniView, 1, GL_TRUE, glm::value_ptr(view));
 
