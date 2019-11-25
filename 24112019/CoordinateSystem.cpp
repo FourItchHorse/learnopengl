@@ -113,13 +113,13 @@ int main ()
     };
     GLuint indices[] {
         0, 1, 3,
-        1, 2, 3,
-        1, 0, 4,
-        1, 4, 5,
+        1, 2, 3, 
+        1, 7, 3,
+        3, 6, 7,
+        0, 2, 5,
+        2, 4, 5,
         2, 3, 7,
-        2, 6, 7,
-        0, 2, 4,
-        2, 4, 6, 
+        3, 5, 7, 
         4, 6, 7, 
         4, 5, 7,
         1, 3, 7, 
@@ -203,7 +203,7 @@ int main ()
     glm::mat4 model = glm::mat4(1.0f);
     
     glm::mat4 proj = glm::perspective(
-            glm::radians(45.0f),
+            glm::radians(80.0f),
             800.0f/600.0f,
             1.0f,
             10.0f
@@ -219,6 +219,7 @@ int main ()
     GLint uniView = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
     
+    glEnable(GL_DEPTH_TEST);
     SDL_Event windowEvent;
     while(true) 
     {
@@ -228,14 +229,14 @@ int main ()
             if (windowEvent.type == SDL_KEYUP && windowEvent.key.keysym.sym == SDLK_ESCAPE) {break;}
         }
         glClearColor(0.0, 0.0, 0.0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT); 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
         GLint uniModel = glGetUniformLocation(shaderProgram, "model");
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(
             model,
             (SDL_GetTicks() / 1024.0f )* glm::radians(180.0f),
-            glm::vec3(0.5, 1.0, 0.0)
+            glm::vec3(1.0, 0.0, 1.0)
         );
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 
