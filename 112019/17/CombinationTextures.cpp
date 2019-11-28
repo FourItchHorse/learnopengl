@@ -189,6 +189,8 @@ int main(int argc, char *argv[])
     float texMix = 0.0f;
     float texLimit = 1.0;
     float tanTime;
+    
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     while (true)
     {
         if(SDL_PollEvent(&windowEvent)) 

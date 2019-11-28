@@ -1,15 +1,15 @@
 
 #define GLEW_STATIC
-#include<D:\source\include\glew.h>
+#include<GL\glew.h>
 #define SDL_MAIN_HANDLED
-#include<D:\source\include\SDL.h>
-#include<D:\source\include\SDL_opengl.h>
+#include<SDL2\SDL.h>
+#include<SDL2\SDL_opengl.h>
 #include <iostream>
-#include "ExampleShader.h"
+#include "Shader.h"
 
 
 
-int main (int argc, char *argv[]) 
+int main () 
 {   
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -32,11 +32,11 @@ int main (int argc, char *argv[])
 
     GLfloat vertices[] {
        -0.1, 1.0, 0.5, 0, 0, //top corner
-        -0.7,0.25, 0.0, 0.5, 0, //upper left corner
-        0.6, 0.35, 0.0, 0.0, 0.5,  //upper right corner
-        -0.45,-0.7, 1.0, 0.0, 0,  //lower left corner
-        0.45, -0.7, 0.0, 1.0, 0.0, //lower right corner
-        0.2, -0.1,  0.0, 0.0, 1.0 //pinch point betweeen upper right and lower left corner
+     -0.7,0.25, 0.0, 0.5, 0, //upper left corner
+    0.6, 0.35, 0.0, 0.0, 0.5,  //upper right corner
+     -0.45,-0.7, 1.0, 0.0, 0,  //lower left corner
+   0.45, -0.7, 0.0, 1.0, 0.0, //lower right corner
+   0.2, -0.1,  0.0, 0.0, 1.0 //pinch point betweeen upper right and lower left corner
  
     };
 
@@ -54,7 +54,7 @@ int main (int argc, char *argv[])
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
