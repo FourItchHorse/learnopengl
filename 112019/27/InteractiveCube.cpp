@@ -15,6 +15,7 @@
 #include <glm/gtc\type_ptr.hpp>
 
 #include <iostream>
+#include <vector>
 
 const int WND_WIDTH = 800;
 const int WND_HEIGHT = 600;
@@ -213,7 +214,8 @@ int main ()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
-        data = stbi_load("Textures/cat.png", &width, &height, &nrChannels, 0);if(data) 
+        data = stbi_load("Textures/cat.png", &width, &height, &nrChannels, 0);
+        if(data) 
         {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
@@ -223,8 +225,6 @@ int main ()
             std::cout << "FAILED TO LOAD TEXTURE 2!" << std::endl;
         }
     stbi_image_free(data);
-    glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
-
     
     
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
@@ -243,7 +243,7 @@ int main ()
         glEnableVertexAttribArray(texAttrib1);
         glVertexAttribPointer(texAttrib1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
      printf("TEXCOORD1 ATTRIB OPENGL ERROR: %u\n", glGetError());
-    
+    glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1);
     
 
     glEnable(GL_DEPTH_TEST);
@@ -266,8 +266,8 @@ int main ()
             spaceCount++;
             randomX = rand()%2;
             randomY = rand()%2;
-            randomZ = rand()%3;
-            printf("%f, %f, %f\r", randomX, randomY, randomZ);
+            randomZ = rand()%14;
+            printf("%f, %f, %f\n", randomX, randomY, randomZ);
             }
             //glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
@@ -293,6 +293,12 @@ int main ()
 
             if(keyboardState[SDL_SCANCODE_RIGHT]){
             right += increment;}
+
+            if(keyboardState[SDL_SCANCODE_RIGHTBRACKET]){
+            rightBracket += increment;}
+            
+            if(keyboardState[SDL_SCANCODE_LEFTBRACKET]){
+            rightBracket -= increment;}
         }
         SDL_GetMouseState(&x, &y);
         
@@ -312,13 +318,25 @@ int main ()
         
         //glm::mat4 model = glm::mat4(1.0f);
 
+        std::vector<glm::vec3> myCubes; 
         glm::mat4 model = glm::mat4(1.0f);
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        for (int i = 0; i < spaceCount + 1; i ++) {   
+        for (int i = 0; i < spaceCount; i ++) {   
          glm::vec3 randomCubePos = glm::vec3(randomX, randomY, randomZ);
          model = generateCube(randomCubePos, spaceCount, shaderProgram);
          glDrawArrays(GL_TRIANGLES, 0, 36);
         }
+        /*
+        for () {
+        glm::mat4 model = glm::mat4(1.0f);
+            if (spaceCount > 0) {
+            model = glm::translate(model, myCubes[spaceCount]);
+            float angle = 20.0f * spaceCount; 
+            } else 
+            {
+                model = glm::translate(model, glm::vec3(0.0f));
+            }
+        } */
 
         glm::mat4 transform = modelTransform(static_cast<float>(x), static_cast<float>(y), down, right, s, d);
         model *= transform;
@@ -373,9 +391,11 @@ glm::mat4 projectionTransfrom(bool isPerspective, float right)
     }
     else if (!isPerspective) 
     {
-       proj = glm::ortho(0.0f, 
-       800.0f, 0.0f, 600.0f, 
-       0.1f, 100.0f);
+       proj = glm::perspective(
+            glm::radians(1000.0f),
+            static_cast<float>(WND_WIDTH)/static_cast<float>(WND_HEIGHT),
+            -100.0f,
+            1000.0f );
     }
     return proj;
 }
@@ -395,11 +415,12 @@ glm::mat4 generateCube (glm::vec3 position, int spaceCount, GLuint shaderProgram
             glm::mat4 model = glm::mat4(1.0f);
             if (spaceCount > 0) {
             model = glm::translate(model, position);
+            float angle = 20.0f * spaceCount; 
             } else 
             {
                 model = glm::translate(model, glm::vec3(0.0f));
             }
-            float angle = 20.0f * spaceCount; 
+            float angle = 20.0f * spaceCount;
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
             return model;
 } 
