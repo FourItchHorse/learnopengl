@@ -66,12 +66,8 @@ const char* fShaderSrc = R"glsl(
     }
 )glsl";
 
-std::tuple <float, float> centreMouseState(float WND_WDITH, float WND_HEIGHT) 
-{
 
-} 
-
-glm::mat4 modelTransform(float WND_WIDTH, float WND_HEIGHT, SDL_Event windowEvent, const uint8_t * keyboardState) //added event and keyboard states as args so I can recieve user input 
+glm::mat4 modelTransform(SDL_Event windowEvent, const uint8_t * keyboardState) //added event and keyboard states as args so I can recieve user input 
 {
     float time = SDL_GetTicks()/512.0f;
     glm::mat4 model = glm::mat4(1.0f);
@@ -80,14 +76,10 @@ glm::mat4 modelTransform(float WND_WIDTH, float WND_HEIGHT, SDL_Event windowEven
     return model;
 }
 
-glm::mat4 viewTransform(float WND_WIDTH, float WND_HEIGHT, SDL_Event windowEvent, const uint8_t * keyboardState) 
+glm::mat4 viewTransform( SDL_Event windowEvent, const uint8_t * keyboardState) 
 {
-    int x, y;
-    SDL_GetMouseState(&x, &y);
-    float mouseX = (static_cast<float>(x) - WND_WIDTH/2.0f)/WND_WIDTH;
-    float mouseY = (static_cast<float>(y) - WND_HEIGHT/2.0f) /WND_HEIGHT;
     glm::mat4 view = glm::lookAt(
-        glm::vec3(1.2f * (mouseX * 15.0f), 5.0f, 2.0f * (mouseY * 5)),
+        glm::vec3(1.2f, 5.0f, 2.0f),
         glm::vec3(0.0f, 0.0f, 0.0f),
         glm::vec3(0.0f, 0.0f, 1.0f)
     );  
@@ -272,7 +264,7 @@ int main()
     glBindVertexArray(vao);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    CreateTexture2D("Textures\\grapefruit.png", GL_TEXTURE0, textures[0]);
+    CreateTexture2D("Textures\\container.jpg", GL_TEXTURE0, textures[0]);
     glUniform1i(glGetUniformLocation(shaderProgram, "tex1"), 0); 
     CreateTexture2D("Textures\\Lenna.png", GL_TEXTURE1, textures[1]);
     glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1); 
