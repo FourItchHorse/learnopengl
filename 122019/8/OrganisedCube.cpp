@@ -184,10 +184,14 @@ GLuint InitProgramObj(const char* vShaderSrc, const char* fShaderSrc)
     return programObject;
 }
 
-/*GLvoid SetVertexAttrib (GLuint shaderProgram, const char* target, ) 
+GLint SetVertexAttrib (GLuint shaderProgram, const char* target, GLint attribsize, GLint stepSize, GLint offset) 
 {
-
-} */
+      GLint myAttrib = glGetAttribLocation(shaderProgram, target);
+        glEnableVertexAttribArray(myAttrib);
+        glVertexAttribPointer(myAttrib, attribsize, GL_FLOAT, GL_FALSE, stepSize * sizeof(GLfloat), (void*) (offset * sizeof(GLfloat)));
+        std::cout << target << " attrib error" << glGetError() << std::endl;
+        return myAttrib;
+} 
 
 int main() 
 {
@@ -265,22 +269,11 @@ int main()
     glUniform1i(glGetUniformLocation(shaderProgram, "tex2"), 1); 
      
     
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-        glEnableVertexAttribArray(posAttrib);
-        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) 0);
-        std::cout << "POS ATTRIB ERRROR " << glGetError() << std::endl;
+    GLint vertexAttribSize = 8;
 
-        GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-        glEnableVertexAttribArray(colAttrib);
-        glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
-        std::cout << "COLOR ATTRIB ERRROR " << glGetError() << std::endl;
-
-    
-        GLint texAttrib1 = glGetAttribLocation(shaderProgram, "texcoord1");
-        glEnableVertexAttribArray(texAttrib1);
-        glVertexAttribPointer(texAttrib1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*) (6 * sizeof(GLfloat)));
-        std::cout << "TEXCOORD ATTRIB ERRROR " << glGetError() << std::endl;
-
+    GLint posAttrib = SetVertexAttrib(shaderProgram, "position", 3, vertexAttribSize, 0); 
+    GLint colAttrib = SetVertexAttrib(shaderProgram, "color", 3, vertexAttribSize, 3);
+    GLint texAttrib = SetVertexAttrib(shaderProgram, "texcoord1", 2, vertexAttribSize, 6);
 
     glEnable(GL_DEPTH_TEST); 
 
@@ -323,4 +316,4 @@ int main()
     SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
-}
+} //Have managed to shed over 100 lines of code compared to InteractiveCube which is nice :)
