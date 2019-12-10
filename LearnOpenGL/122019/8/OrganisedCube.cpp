@@ -66,10 +66,6 @@ const char* fShaderSrc = R"glsl(
     }
 )glsl";
 
-std::tuple <float, float> centreMouseState(float WND_WDITH, float WND_HEIGHT) 
-{
-
-} 
 
 glm::mat4 modelTransform(float WND_WIDTH, float WND_HEIGHT, SDL_Event windowEvent, const uint8_t * keyboardState) //added event and keyboard states as args so I can recieve user input 
 {
