@@ -54,15 +54,15 @@ RenderObject::~RenderObject()
 GLvoid RenderObject::Draw() 
 {
     GLuint myVertCount = 0;
-    if (isElement) {
-        myVertCount = sizeof(this->indices)/sizeof(this->indices[0]) / vertexAttribCount;
-        setElementDrawObject(this->vertices, this->indices);
+    if (myRender.isElement) {
+        myVertCount = sizeof(myRender.indices)/sizeof(myRender.indices[0]) / myRender.vertexAttribCount;
+        setElementDrawObject(myRender.vertices, myRender.indices);
         drawElementObject(myVertCount);
     }
-    else if (!isElement) 
+    else if (myRender.isElement == false) 
     {
-        GLuint myVertCount = sizeof(this->vertices)/sizeof(this->vertices[0]) / vertexAttribCount;
-        setArrayDrawObject(this->vertices);
+        GLuint myVertCount = sizeof(myRender.vertices)/sizeof(myRender.vertices[0]) / myRender.vertexAttribCount;
+        setArrayDrawObject(myRender.vertices);
         drawArrayObject(myVertCount);
     }
 }
