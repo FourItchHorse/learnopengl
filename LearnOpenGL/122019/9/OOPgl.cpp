@@ -12,6 +12,7 @@ Context::Context(const GLint contextAttributes[], GLint windowAttributes[], cons
     glewExperimental = GL_TRUE;
     glewInit();
     std::cout << "INIT ERRROR " << glGetError() << std::endl;
+
     for(auto iter = renderObjects.begin; iter != renderObjects.end; iter++)
     renderObjects[iter]->RenderObject(); 
 }

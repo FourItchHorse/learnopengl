@@ -24,8 +24,7 @@ void main ()
     
     gl_Position = proj * view  * model * vec4(position, 0.0, 1.0);
 }
-)glsl"
-;
+)glsl";
 
 const char* fragmentShaderSource = R"glsl(
 #version 330 core
@@ -48,5 +47,5 @@ void main ()
     vec4 colTex2 = texture(tex2, TexCoord2 + time) * texEffect;
     outColor = mix(colTex1, colTex2, 0.5) / (colorEffect * vec4(Color, 1.0));
 }
-)glsl"
+)glsl";
 

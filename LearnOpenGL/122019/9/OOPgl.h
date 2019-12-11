@@ -19,22 +19,11 @@ struct renderObj{
         GLboolean isElement;
         const char* fShaderSrc;
         const char* vShaderSrc;
-        GLuint textures[];
         const char* imageFilePaths[];
-        GLfloat vertices[];
-        GLuint indices[];
         GLuint vertexAttribCount;
-};
-
-class Context 
-{
-    public: 
-    Context(const GLint contextAttributes[], GLint windowAttributes[], const char* title);
-    ~Context();
-    std::vector<RenderObject*> renderObjects;
-    private:
-    SDL_Window* window;
-    SDL_GLContext context;
+        GLfloat* vertices[];
+        GLuint* indices[];
+        GLuint* textures[];
 };
 
 class RenderObject 
@@ -48,7 +37,7 @@ class RenderObject
 
     GLuint initShaderProgram(const char* vertexSrc, const char* fragmentSrc);
 
-    GLuint createTexture2D(const char* filepath, GLenum activeTexture); //add glGenTextures to this as well this time
+    GLuint* createTexture2D(const char* filepath, GLenum activeTexture); //add glGenTextures to this as well this time
 
     GLint setVertexAttrib(const char* target, GLint stepsize, GLint offset);
 
@@ -74,3 +63,14 @@ class RenderObject
     GLuint ebo;
 };
 
+
+class Context 
+{
+    public: 
+    Context(const GLint contextAttributes[], GLint windowAttributes[], const char* title);
+    ~Context();
+    std::vector<RenderObject*> renderObjects;
+    private:
+    SDL_Window* window;
+    SDL_GLContext context;
+};

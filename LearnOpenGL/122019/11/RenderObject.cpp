@@ -5,6 +5,9 @@
 #include <SDL2/SDL_opengl.h> 
 #include <GL/glew.h>
 #include <STB/stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class renderObject
 {
@@ -13,6 +16,7 @@ class renderObject
         ~renderObject();
         void Draw();
         void SetVertexAttrib(const char* target, int stepsize, int offset);
+        virtual 
         bool isElement;
         static const int vertexAttribCount;
         static const int vertCount;

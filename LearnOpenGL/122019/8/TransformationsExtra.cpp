@@ -67,18 +67,18 @@ const char* fShaderSrc = R"glsl(
 )glsl";
 
 
+float down = 0;
+float right = 0;
 glm::mat4 modelTransform(SDL_Event windowEvent, const uint8_t * keyboardState) //added event and keyboard states as args so I can recieve user input 
 {
     float time = SDL_GetTicks()/512.0f;
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f));
-    model = glm::rotate(model, glm::radians(20.0f * time), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::rotate(model, glm::radians(20.0f * down), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::scale(model, glm::vec3(sin(time) * 0.5f) + 1.0f);
     return model;
 }
 
-float down = 0;
-float right = 0;
 glm::mat4 viewTransform( SDL_Event windowEvent, const uint8_t * keyboardState) 
 {
     float increment = 1.0f/512.0f;
@@ -103,7 +103,7 @@ glm::mat4 projTransform(float WND_WIDTH, float WND_HEIGHT, SDL_Event windowEvent
 {
     glm::mat4 proj = glm::mat4(1.0f);
         proj = glm::perspective(
-            glm::radians(45.0f),
+            glm::radians(45.0f * right),
             static_cast<float>(WND_WIDTH)/static_cast<float>(WND_HEIGHT),
             1.0f,
             100.0f
