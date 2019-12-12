@@ -1,28 +1,30 @@
 #define GLEW_STATIC
 #define SDL_MAIN_HANDLED
 #define STB_IMAGE_IMPLEMENTATION
+
+#include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h> 
-#include <GL/glew.h>
 #include <STB/stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iterator>
 
 class renderObject
 {
     public:
-        renderObject(bool isElement, const char* vShaderSrc, const char* fShaderSrc, const char* texFilePaths[]);
+        renderObject(bool isElement, const char* vShaderSrc, const char* fShaderSrc, char* texFilePaths[], GLfloat vertices[], GLuint indices[]);
         ~renderObject();
         void Draw();
         void SetVertexAttrib(const char* target, int stepsize, int offset);
-        virtual 
+        virtual glm::mat4 modelTransform();
+        virtual glm::mat4 viewTransform();
+        virtual glm::mat4 projTransform(); 
         bool isElement;
         static const int vertexAttribCount;
         static const int vertCount;
-        static const char* texFilePaths[6];
-        GLfloat vertices[];
-        GLfloat indices[];
+        char* texFilePaths[6];
         GLuint* textures[sizeof(texFilePaths)/sizeof(texFilePaths[0])];
     private:
         GLuint loadShader(const char* shaderSrc, GLenum type);
@@ -34,18 +36,27 @@ class renderObject
         GLuint vbo;
         GLuint ebo;
         GLuint program;
+        GLfloat vertices[];
+        GLfloat indices[];
 };
 
-renderObject::renderObject(bool isElement, const char* vShaderSrc, const char* fShaderSrc, const char* texFilePaths[]) 
+renderObject::renderObject(bool isElement, const char* vShaderSrc, const char* fShaderSrc, char* myTexFilePaths[], GLfloat verts[], GLuint inds[]) 
 {
     program = initProgram(loadShader(vShaderSrc, GL_VERTEX_SHADER), loadShader(fShaderSrc, GL_FRAGMENT_SHADER));
-    for(int i = 0; i < sizeof(texFilePaths)/sizeof(texFilePaths[0]); i++) 
+    for(int i = 0; i < sizeof(myTexFilePaths)/sizeof(myTexFilePaths[0]); i++) 
     CreateTexture2D(textures[i], texFilePaths[i], GL_TEXTURE0 + i);
     glewExperimental = GL_TRUE;
     glewInit();
+    this.vertices = verts;
+    this.indices = inds;
+}
+
+void SetDrawObject() 
+{
+
 }
 
 int renderObject::mainLoop(SDL_Window* window) 
 {
-
+    return 0;
 }
