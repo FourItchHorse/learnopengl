@@ -40,11 +40,10 @@ const char* vShaderSrc = R"glsl(
     uniform mat4 view;
     uniform mat4 proj;
     
-    uniform vec3 overrideColor;
 
     void main () 
     {
-        Color = overrideColor * color;
+        Color = color;
         Texcoord1 = texcoord1;
         gl_Position = proj * view * model * vec4(position, 1.0);
     }
@@ -104,7 +103,7 @@ glm::mat4 projTransform(float WND_WIDTH, float WND_HEIGHT, SDL_Event windowEvent
 {
     glm::mat4 proj = glm::mat4(1.0f);
         proj = glm::perspective(
-            glm::radians(65.0f),
+            glm::radians(65.0f * right),
             static_cast<float>(WND_WIDTH)/static_cast<float>(WND_HEIGHT),
             1.0f,
             100.0f
