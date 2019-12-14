@@ -45,6 +45,11 @@ const char* ConvertShaderSource(const char* filePath)
     std::cout << "My shader character is..." << data << std::endl;
     return data;
 }
+
+
+const char* vShaderSrc = ConvertShaderSource("C:\\source\\repos\\C++\\learnopengl\\LearnOpenGL\\122019\\13\\vShader.vs");
+const char* fShaderSrc = ConvertShaderSource("C:\\source\\repos\\C++\\learnopengl\\LearnOpenGL\\122019\\13\\fShader.fs");
+
 GLuint LoadShader(const char* shaderSrc, GLenum type)
 { 
     GLuint myShader = glCreateShader(type);
@@ -96,8 +101,6 @@ int main()
     glewExperimental = GL_TRUE;
     glewInit();
 
-    const char* vShaderSrc = ConvertShaderSource("C:\\source\\repos\\C++\\learnopengl\\LearnOpenGL\\122019\\13\\vShader.vs");
-    const char* fShaderSrc = ConvertShaderSource("C:\\source\\repos\\C++\\learnopengl\\LearnOpenGL\\122019\\13\\fShader.fs");
     GLuint shaderProgram = InitProgram(vShaderSrc, fShaderSrc);
     //printf("The shader sources are... \n%s\n%s\n", vShaderSrc, fShaderSrc);
 }
