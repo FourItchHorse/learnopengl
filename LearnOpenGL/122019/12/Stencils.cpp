@@ -209,6 +209,7 @@ GLint SetVertexAttrib (GLuint shaderProgram, const char* target, GLint attribsiz
 
 int main() 
 {
+    printf("My shader source is... n#\n%s\n", vShaderSrc);
     SDL_Init(SDL_INIT_VIDEO);
     for(int i = 0; i < sizeof(context_attributes)/sizeof(context_attributes[0]); i += 2) 
     {
