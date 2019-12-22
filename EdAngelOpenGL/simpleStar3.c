@@ -3,6 +3,8 @@ void display ()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
+	glEnable(GL_POLYGON_STIPPLE); 
+	
 	glBegin(GL_TRIANGLES);	
 	  glVertex2f(-0.15, 0.15);
           glVertex2f(0.0, 0.75);
