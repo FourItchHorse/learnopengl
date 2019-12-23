@@ -1,6 +1,7 @@
 #include <GL/freeglut.h>
 #include <stdio.h>
 GLfloat v[3][2] = {0.0f, 0.5, -0.5f, -0.5f, 0.5f, -0.5f};
+int n = 4;
 void triangle(GLfloat *a, GLfloat *b, GLfloat *c) 
 {
 	glBegin(GL_TRIANGLES);
@@ -33,7 +34,7 @@ void divideTriangle(GLfloat *a, GLfloat *b, GLfloat *c, int m)
 void display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	divideTriangle(v[0], v[1], v[2], 2);
+	divideTriangle(v[0], v[1], v[2], n);
 	glFlush();
 	printf("DISPLAY ERROR: %u\n", glGetError());
 
