@@ -1,14 +1,14 @@
 #include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <GL/glut.h>
 #include <stdlib.h>
 
 #include "InitShader.cpp"
 	const int numPoints = 5000;
-void init() 
+void init(void) 
 {
 	GLfloat points[numPoints][5];
 
-	GLfloat vertices[3][5]={{-1.0, -1.0}, {0.0, 1.0},{1.0, -1.0}};
+	GLfloat vertices[3][2]={{-1.0, -1.0}, {0.0, 1.0},{1.0, -1.0}};
 
 	points[0][0] = 0.25;
 	points[0][1] = 0.5;
@@ -22,12 +22,12 @@ void init()
 		for(int i = 0; i < 2; i++) 
 		points[k][i] = (points[k - 1][i] + vertices[j][i])/2.0;
 		
-		points[k][j + 2] = 0.75;
+		points[k][j + 2] =  static_cast<float>(k)/static_cast<float>(numPoints);
 	}
 
 	
-	GLuint program = InitShader("SierpinskiVert.glsl", "SierpinskiFrag.glsl");
-	glUseProgram(program);
+	GLuint program = ShaderReader::InitShader("SierpinskiVert.glsl", "SierpinskiFrag.glsl");
+	glUseProgram(program); 
 
 	GLuint abuffer;
 
@@ -40,19 +40,21 @@ void init()
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW); 
 
+	
 	GLuint loc = glGetAttribLocation(program, "pos");
 	glEnableVertexAttribArray(loc);
-	glVertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float),0); 
+	glVertexAttribPointer(loc, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float),(void*)0); 
 
 	GLuint col = glGetAttribLocation(program, "col");
 	glEnableVertexAttribArray(col);
 	glVertexAttribPointer(col, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float),(void*)(2*sizeof(float)));
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(1.0, 1.0, 1.0, 1.0); 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
-void mydisplay(void) 
+void mydisplay() 
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, numPoints);
+	glDrawArrays(GL_TRIANGLES, 0, numPoints);
 	glFlush();
 }
 int main (int argc, char **argv) {
@@ -61,6 +63,7 @@ int main (int argc, char **argv) {
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("Non-interactive Sierpinski gasket");
+	glewInit();
 	init();
 	glutDisplayFunc(mydisplay);
 	glutMainLoop();

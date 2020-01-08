@@ -1,8 +1,6 @@
 #version 330 core
-	
-	in vec3 Colour;
-
-	void main () 
+	in vec4 Colour;
+	void main()
 	{
-		gl_FragColor = vec4(Colour, 1.0);
+		gl_FragColor = Colour;
 	}
