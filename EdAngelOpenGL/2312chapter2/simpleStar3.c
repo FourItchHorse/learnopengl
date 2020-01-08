@@ -5,7 +5,7 @@ void display ()
 	
 	glEnable(GL_POLYGON_STIPPLE); 
 	
-	glBegin(GL_TRIANGLES);	
+	glBegin(GL_LINE_LOOP);	
 	  glVertex2f(-0.15, 0.15);
           glVertex2f(0.0, 0.75);
 	  glVertex2f(0.15, 0.15);
