@@ -21,7 +21,7 @@
 		//buf[size] = ' ';
 		fclose(fp);
 
-		std::cout << buf << std::endl;
+		printf(buf);
 		return buf;
 	}
 	GLuint InitShader(const char* vShaderFile, const char* fShaderFile) 

@@ -22,7 +22,9 @@ void init(void)
 		for(int i = 0; i < 2; i++) 
 		points[k][i] = (points[k - 1][i] + vertices[j][i])/2.0;
 		
-		points[k][j + 2] =  static_cast<float>(k)/static_cast<float>(numPoints);
+		points[k][j + 2] = 1.0;
+		points[k][4] = 1.0f;
+		
 	}
 
 	
@@ -49,12 +51,11 @@ void init(void)
 	glEnableVertexAttribArray(col);
 	glVertexAttribPointer(col, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float),(void*)(2*sizeof(float)));
 	glClearColor(1.0, 1.0, 1.0, 1.0); 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 void mydisplay() 
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLES, 0, numPoints);
+	glDrawArrays(GL_POINTS, 0, numPoints);
 	glFlush();
 }
 int main (int argc, char **argv) {
