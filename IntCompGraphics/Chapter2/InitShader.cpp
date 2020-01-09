@@ -18,10 +18,10 @@
 		char* buf = new char[size];
 		fread(buf, 1, size, fp);
 
-		//buf[size] = ' ';
+		buf[size] = ' ';
 		fclose(fp);
-
 		printf(buf);
+
 		return buf;
 	}
 	GLuint InitShader(const char* vShaderFile, const char* fShaderFile) 
@@ -85,6 +85,7 @@
 			delete [] logMsg;
 			exit(EXIT_FAILURE);
 		}
+		glUseProgram(program);
 		return program;
 	}
 }
