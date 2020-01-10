@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "InitShader.cpp"
-	const int numPoints = 5000;
+	const int numPoints = 100;
 void init(void) 
 {
 	GLfloat points[numPoints][5];
@@ -23,7 +23,7 @@ void init(void)
 		points[k][i] = (points[k - 1][i] + vertices[j][i])/2.0;
 		
 		points[k][j + 2] = 1.0;
-		points[k][4] = 1.0f;
+		points[k][4] = static_cast<float>(k) / static_cast<float>(numPoints);
 		
 	}
 
@@ -51,14 +51,15 @@ void init(void)
 
 	GLuint col = glGetAttribLocation(program, "col");
 	glEnableVertexAttribArray(col);
-	glVertexAttribPointer(col, 2, GL_FLOAT, GL_FALSE, 
+	glVertexAttribPointer(col, 3, GL_FLOAT, GL_FALSE, 
 			5*sizeof(float),(void*)(2*sizeof(float)));
-	glClearColor(1.0, 1.0, 1.0, 1.0); 
+	glClearColor(0.0, 0.0, 0.0, 1.0); 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 void display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_POINTS, 0, numPoints);
+	glDrawArrays(GL_TRIANGLES, 0, numPoints);
 	glFlush();
 }
 int main (int argc, char **argv) {
