@@ -2,7 +2,7 @@
 #include <math.h>
        GLfloat v[3][2] = {0.5, -0.5, 0.0, 0.5, -0.5, -0.5};
        int n = 4;
-       float twist = 1.5;
+       float twist = 15;
 void triangle(GLfloat *a, GLfloat *b, GLfloat *c, int type) 
 {
 	GLfloat v[2];
