@@ -36,7 +36,6 @@ extern "C" {
 
 		source[len] = 0;
 
-		printf(source);
 		return const_cast<const GLchar*>(source);
 	}
 

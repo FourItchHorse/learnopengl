@@ -2,7 +2,6 @@
 using namespace std;
 
 #include "../MyIncl/vgl.h"
-#include "../MyIncl/LoadShaders.h"
 #include "../MyIncl/LoadShaders.cpp"
 enum VAO_IDs {Triangles, NumVAOs = 1};
 enum Buffer_IDs {ArrayBuffer, NumBuffers = 1};
@@ -50,7 +49,7 @@ void display(void)
 	glClearBufferfv(GL_COLOR, 0, black);
 
 	glBindVertexArray(VAOs[Triangles]);
-	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, NumVertices);
 }
 int main (int argc, char** argv) 
 {
