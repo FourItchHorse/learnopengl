@@ -49,13 +49,12 @@ void display(void)
 	glClearBufferfv(GL_COLOR, 0, black);
 
 	glBindVertexArray(VAOs[Triangles]);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, NumVertices);
+	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 }
 int main (int argc, char** argv) 
 {
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Triangles", 
-			NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewInit();
 	
