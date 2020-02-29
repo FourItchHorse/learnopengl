@@ -24,54 +24,39 @@ static const GLchar* ReadShader(const char* filename)
 {
 	FILE* infile = fopen (filename, "rb" );
 	if(!infile) 
-	{
-	#ifdef _DEBUG
+	{ 
+                #ifdef _DEBUG
 		std::cerr << "Unable to open file '"<< filename << ",'" << std::endl;
-	#endif /*_DEBUG*/
-		return NULL
+	        #endif /*_DEBUG*/
+		return NULL;
 	}
-
 	fseek(infile, 0, SEEK_END);
 	int len = ftell (infile);
 	fseek (infile, 0, SEEK_SET);
-
 	GLchar* source = new GLchar[len + 1];
-
 	fread(source, 1, len, infile);
 	fclose(infile);
-
 	source[len] = 0;
-
 	return const_cast<const GLchar*>(source);
 }
 GLuint LoadShaders(ShaderInfo* shaders) 
 {
 
 	if( shaders == NULL ) {return 0; }
-
 	GLuint program = glCreateProgram();
-
 	ShaderInfo* entry = shaders;
-
 	while( entry->type != GL_NONE) 
 	{
 		GLuint shader = glCreateShader(entry->type);
-
 		entry->shader = shader;
-
 		const GLchar* source = ReadShader(entry-> filename);
 		if ( source  == NULL ) {
 		for(entry = shaders; entry->type != GL_NONE; ++entry) {
 				glDeleteShader( entry->shader );
 				entry->shader = 0;
 			}
-
-
 			return 0;
 		}
-	
-
-
 	glShaderSource(shader, 1, &source, NULL);
 	delete [] source;
 
@@ -80,39 +65,34 @@ GLuint LoadShaders(ShaderInfo* shaders)
 	GLint compiled;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled );
 	if (! compiled ) {
-		#ifdef _DEBUG
+		
 			GLsizei len;
 			GLchar* log = new GLchar[len+1];
-			glGetShaderInfoLog(shader, len, &len, log)
+			glGetShaderInfoLog(shader, len, &len, log);
 				std::cerr << "Shader compilation failed :" << log << std::endl;
 			delete [] log;
-		#endif
+		
 
 			return 0;
 	}
-
-	
 	glAttachShader( program, shader);
 
-	++entry
+	++entry;
 	}
-
 	glLinkProgram( program );
 
 	GLint linked;
 	glGetProgramiv(program, GL_LINK_STATUS, &linked);
 	if(!linked) 
 	{
-	#ifdef _DEBUG
+	
 		GLsizei len;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len );
-
-
-		GLchar* log = new GLchar[len +1]
+		GLchar* log = new GLchar[len +1];
 		glGetProgramInfoLog(program, len, &len, log);
 		std::cerr << "Shader linking failed: " << log << std::endl;
 		delete[] log;
-	#endif
+	
 	
 	
 	for(entry = shaders; entry->type != GL_NONE; ++entry) 
@@ -122,7 +102,6 @@ GLuint LoadShaders(ShaderInfo* shaders)
 	}
 		return 0;
 	}
-
 	return program;
 }
 /* END OF SHADER COMPILER*/
@@ -131,20 +110,20 @@ void init (void)
 {
 	static const GLfloat vertices[NumVertices][5] =
 	{
-		{-0.9, -0.9, 1.0, 1.0, 1.0},
-		{0.85, -0.9, 1.0, 0.0, 0.0},
-		{-0.9, 0.85, 0.0, 1.0, 0.0},
+		{-0.9, -0.9 },
+		{0.85, -0.9},
+		{-0.9, 0.85},
 		
-		{0.9, -0.85, 0.0, 0.0, 1.0},
-		{0.9, 0.9,   0.0, 1.0, 0.0},
-		{-0.85, 0.9, 1.0, 0.0, 0.0}
+		{0.9, -0.85},
+		{0.9, 0.9},
+		{-0.85, 0.90}
 	};
 
 
 	glCreateVertexArrays(NumVAOs, VAOs);
 
 	glCreateBuffers(NumBuffers, Buffers);
-	glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices), 0);
+	glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices), vertices, 0);
 
 	ShaderInfo shaders[] = {
 		{GL_VERTEX_SHADER, "27022020.vert" },
@@ -158,21 +137,27 @@ void init (void)
 	glBindVertexArray(VAOs[Triangles]);
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
 	
-	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(vPosition);
 
-	glVertexAttribPointer(vColour, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)2);
+	glVertexAttribPointer(vColour, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)2);
 	glEnableVertexAttribArray(vColour);
 
 }
 void display(void)
 {
+	static const float bg[] = {0.0, 0.0, 0.0, 0.0};
+	glClearBufferfv(GL_COLOR, 0, bg);
 
+	glBindVertexArray(VAOs[Triangles]);
+	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 }
 
 int main(int argc, char** argv) 
 {
 	glfwInit();
+	
+
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewInit();
