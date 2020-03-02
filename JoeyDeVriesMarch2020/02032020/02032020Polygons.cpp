@@ -1,17 +1,8 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include <cstdlib>
 #include <iostream>
-enum VAO_IDs { Triangles, NumVAOs };
-enum Buffer_IDs { ArrayBuffer, ElementBuffer, NumBuffers };
-enum Attrib_IDs { vPosition = 0, vColour = 1};
-
-GLuint VAOs[NumVAOs];
-GLuint Buffers[NumBuffers];
-
-const GLuint NumVertices = 6;
 
 typedef struct { 
         GLenum		type;
@@ -25,9 +16,7 @@ static const GLchar* ReadShader(const char* filename)
 	FILE* infile = fopen (filename, "rb" );
 	if(!infile) 
 	{ 
-                #ifdef _DEBUG
 		std::cerr << "Unable to open file '"<< filename << ",'" << std::endl;
-	        #endif /*_DEBUG*/
 		return NULL;
 	}
 	fseek(infile, 0, SEEK_END);
@@ -37,6 +26,7 @@ static const GLchar* ReadShader(const char* filename)
 	fread(source, 1, len, infile);
 	fclose(infile);
 	source[len] = 0;
+	printf(source);
 	return const_cast<const GLchar*>(source);
 }
 GLuint LoadShaders(ShaderInfo* shaders) 
@@ -104,18 +94,27 @@ GLuint LoadShaders(ShaderInfo* shaders)
 	}
 	return program;
 }
-/* END OF SHADER COMPILER*/
+
+
+enum VAO_IDs { Triangles, NumVAOs };
+enum Buffer_IDs { ArrayBuffer, ElementBuffer, NumBuffers };
+enum Attrib_IDs { vPosition = 0, vColour = 1};
+
+GLuint VAOs[NumVAOs];
+GLuint Buffers[NumBuffers];
+
+const GLuint NumVertices = 6;
 
 void init (void) 
 {
 	static const GLfloat vertices[NumVertices][5] =
 	{
-		{-0.9, -0.9 },
-		{0.85, -0.9},
+		{-0.9, -0.90},
+		{0.85, -0.90},
 		{-0.9, 0.85},
 		
 		{0.9, -0.85},
-		{0.9, 0.9},
+		{0.9, 0.90},
 		{-0.85, 0.90}
 	};
 
@@ -123,32 +122,29 @@ void init (void)
 	glCreateVertexArrays(NumVAOs, VAOs);
 
 	glCreateBuffers(NumBuffers, Buffers);
-	glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices), vertices, 0);
 
 	ShaderInfo shaders[] = {
-		{GL_VERTEX_SHADER, "27022020.vert" },
-		{GL_FRAGMENT_SHADER, "27022020.frag" },
+		{GL_VERTEX_SHADER, "02032020.vert" },
+		{GL_FRAGMENT_SHADER, "02032020.frag" },
 		{GL_NONE, NULL }
 	};
 
-	GLuint program = LoadShaders(shaders);
+
+        GLuint program = LoadShaders(shaders);
+
 	glUseProgram(program);
 
 	glBindVertexArray(VAOs[Triangles]);
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
 	
-	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(vPosition);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), NULL, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(vColour, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)2);
-	glEnableVertexAttribArray(vColour);
+	glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(vPosition);
 
 }
 void display(void)
 {
-	static const float bg[] = {0.0, 0.0, 0.0, 0.0};
-	glClearBufferfv(GL_COLOR, 0, bg);
-
 	glBindVertexArray(VAOs[Triangles]);
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 }
@@ -157,12 +153,18 @@ int main(int argc, char** argv)
 {
 	glfwInit();
 	
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Polygons", NULL, NULL);
 	glfwMakeContextCurrent(window);
+
+	glewExperimental = GL_TRUE;
 	glewInit();
 	
 	init();
+
 
 	while (!glfwWindowShouldClose(window))
 	{
