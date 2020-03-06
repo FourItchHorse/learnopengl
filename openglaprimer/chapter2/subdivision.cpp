@@ -149,5 +149,6 @@ int main(int argc, char** argv)
 	glutCreateWindow("simple");
 	glutDisplayFunc(display);
 	init();
+	printf("OpenGL version: %s", glGetString(GL_VERSION));
 	glutMainLoop();
 }

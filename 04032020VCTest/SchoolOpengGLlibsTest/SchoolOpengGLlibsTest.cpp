@@ -1,6 +1,7 @@
 // SchoolOpengGLlibsTest.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-#include <GL/gl3w.h>
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -68,12 +69,16 @@ int main(int argc, char** argv)
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
 	glfwMakeContextCurrent(window);
-	gl3wInit();
+	glewExperimental = GL_TRUE;
+	if (!glewInit())
+	{
+		fprintf(stderr, "Failed to opengl");
+	}
 
 	init();
 

@@ -1,5 +1,5 @@
 #define GLEW_STATIC
-#include <GL/glew.h>
+#include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
 #include <cstdlib>
@@ -163,9 +163,13 @@ int main(int argc, char** argv)
 
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
 	glfwMakeContextCurrent(window);
-	glewExperimental = GL_TRUE;
-	glewInit();
-	
+	if  (gl3wInit()) 
+	{
+		printf(stderr, "Failed to init GL3W!\n");
+	}
+		printf("OGL VENDOR: %s\n", glGetString(GL_VENDOR));	
+		printf("OGL VERSION: %s\n", glGetString(GL_VERSION));	
+		printf("OGL RENDERER: %s\n", glGetString(GL_RENDERER));	
 	init();
 
 	while (!glfwWindowShouldClose(window))

@@ -161,7 +161,7 @@ int main(int argc, char** argv)
 	glfwMakeContextCurrent(window);
 
 	glewExperimental = GL_TRUE;
-	glewInit();
+	if(!glewInit()) { fprintf(stderr, "Unable to init GLEW"); }
 	
 	init();
 

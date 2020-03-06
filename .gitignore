@@ -2,4 +2,9 @@ debug.log
 *.c.un~ *.c~ 
 *~ 
 *.swp
-*.cpp.un~ 
+*.cpp.un~
+*.obj
+*.idb
+*.tlog
+*.pbd
+ 

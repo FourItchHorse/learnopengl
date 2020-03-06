@@ -1,2 +1,1 @@
-﻿  Shaders.cpp
-  SchoolOpengGLlibsTest.vcxproj -> C:\source\repos\C++\SchoolOpengGLlibsTest\Debug\SchoolOpengGLlibsTest.exe
+﻿LINK : fatal error LNK1104: cannot open file 'glew32.lib'

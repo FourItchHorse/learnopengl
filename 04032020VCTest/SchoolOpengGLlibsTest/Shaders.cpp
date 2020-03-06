@@ -22,7 +22,7 @@ static const GLchar* ReadShader(const char* filename)
 GLuint LoadShaders(ShaderInfo* shaders)
 {
 
-	gl3wInit();
+	glewInit();
 	if (shaders == NULL) { return 0; }
 	GLuint program = glCreateProgram();
 	ShaderInfo* entry = shaders;
