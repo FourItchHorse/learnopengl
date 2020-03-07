@@ -1,3 +1,4 @@
+/*
 #include <GL/gl3w.h>
 #define GLFW_NO_GLU 1
 #define GLFW_INCLUDE_GLCOREARB 1 
@@ -9,28 +10,25 @@
 
 int huechange06032020();
 
-int main(int argc, char* argv)
+/*int main(int argc, char** argv)
 {
+	fprintf(stderr, "Using main from 06032020 BG file\n");
 	huechange06032020();
 	return 0;
-}
-
+} */
+/*
 void processInput(GLFWwindow* window) 
 {
-	
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE)
-		glfwWindowShouldClose(window);
 	
 }
 
 void display()
 {
-	double time = glfwGetTime();
-	const GLfloat BG[] = { (float)sin(time) * 0.5f + 0.5f,
-					 (float)cos(time) * 0.5f + 0.5f,
-					 0.0f, 1.0f };
-	glClearBufferfv(GL_COLOR, 0, BG);
-
+	float time = static_cast<float>(glfwGetTime());
+	glClearColor( sin(time) * 0.5 + 0.5, 
+				  cos(time) * 0.5 + 0.5,
+				 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 
@@ -70,11 +68,10 @@ int huechange06032020()
 
 	
 
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS)
 	{
-		glfwSwapBuffers(window);
 		display();
-		processInput(window);
+		glfwSwapBuffers(window);
 	}
 	return 0;
 }
@@ -90,3 +87,4 @@ int huechange06032020()
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+*/
