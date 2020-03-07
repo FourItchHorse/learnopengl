@@ -1,5 +1,8 @@
 debug.log 
-*.c.un~ *.c~ 
+*.c.un~ 
+*.c~ 
+*.cpp~
+*.cpp.un~
 *~ 
 *.swp
 *.cpp.un~
@@ -7,4 +10,6 @@ debug.log
 *.idb
 *.tlog
 *.pbd
+*.db
+*.VC
  
