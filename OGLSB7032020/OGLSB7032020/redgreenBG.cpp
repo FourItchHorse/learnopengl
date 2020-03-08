@@ -1,4 +1,4 @@
-/*
+
 #include <GL/gl3w.h>
 #define GLFW_NO_GLU 1
 #define GLFW_INCLUDE_GLCOREARB 1 
@@ -76,7 +76,7 @@ int huechange06032020()
 	return 0;
 }
 
-
+*/
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
@@ -87,4 +87,4 @@ int huechange06032020()
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-*/
+

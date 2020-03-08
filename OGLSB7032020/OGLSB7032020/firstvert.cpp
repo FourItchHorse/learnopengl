@@ -7,20 +7,22 @@
 #include <stdio.h>
 #include <math.h>
 
+
 struct shader {
 	const char* source;
 	GLenum type;
 	GLuint ID;
 };
+
 const GLchar* vertexShader = R"glsl(
 	#version 450 core
 	void main(void) 
 	{
 		gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
 	}
-)glsl"; 
+)glsl";
 const GLchar* fragmentShader = R"glsl(
-	#verison 450 core
+	#version 450 core
 	out vec4 color;
 	void main(void)
 	{
@@ -28,64 +30,85 @@ const GLchar* fragmentShader = R"glsl(
 	}
 )glsl";
 
-
 GLuint compileProgram(shader* shaders) 
 {
+	GLuint program;
 	shader* entry = shaders;
-	GLuint program = glCreateProgram();
+	program = glCreateProgram();
 	while (entry->type != GL_NONE)
 	{
 		GLuint shader = glCreateShader(entry->type);
 		entry->ID = shader;
 		glShaderSource(shader, 1, &entry->source, NULL);
-		delete[] entry->source;
 		glCompileShader(shader);
 		GLint compiled;
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-		/*if (!compiled)
+		if (!compiled)
 		{
 			GLsizei len;
+			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
 			GLchar* log = new GLchar[len+1];
 			glGetShaderInfoLog(shader, len, &len, log);
 			fprintf(stderr, "%s\n", log);
 			return 0;
-		} */
+		} 
 		glAttachShader(program, shader);
+		glDeleteShader(shader);
 		++entry;
 	}
 	glLinkProgram(program);
 	GLint linked;
 	glGetProgramiv(program, GL_COMPILE_STATUS, &linked);
-	/*if (!linked)
+	if (!linked)
 	{
 		GLsizei len;
-		GLchar* log = new GLchar[len + 1];
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+		GLchar* log = new GLchar[len+1];
 		glGetProgramInfoLog(program, len, &len, log);
 		fprintf(stderr, "%s\n", log);
-		return 0;
-	}*/
+		return 0; 
+	} 
 	return program;
 }
-void display() 
+void display(GLuint* program, GLuint* vao) 
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glUseProgram(program[0]);
+	glDrawArrays(GL_POINTS, 0, 1);
 }
 int main(int argc, char** argv) 
 {
-	fprintf(stderr, "Using main from 07032020 first vert");
-	int major = 4;
-	int minor = 3;
+	fprintf(stderr, "Using main from 07032020 first vert\n");
+	int majorVersion = 4;
+	int minorVersion = 3;
 	if (!glfwInit())
 	{
-		fprintf(stderr, "UNABLE TO CREATE WINDOW\n");
+		fprintf(stderr, "UNABLE TO INIT GLFW\n");
 		return -1;
 	}
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_VERSION_MAJOR, major);
-	glfwWindowHint(GLFW_VERSION_MINOR, minor);
-	
+
 	GLFWwindow* myWindow = glfwCreateWindow(800, 600, "First vert 07032020", nullptr, nullptr);
+	if (!myWindow)
+	{
+		fprintf(stderr, "Failed to create window\n");
+		return -1;
+	}
+	glfwMakeContextCurrent(myWindow);
+
+	if (gl3wInit())
+	{
+		fprintf(stderr, "UNABLE TO INIT OPENGL: %d\n", gl3wInit());
+		return -1;
+	}
+
+	fprintf(stderr, "\nVENDOR: %s\n", (char*)glGetString(GL_VENDOR));
+	fprintf(stderr, "VERSION: %s\n", (char*)glGetString(GL_VERSION));
+	fprintf(stderr, "RENDERER: %s\n", (char*)glGetString(GL_RENDERER));
+
 
 	GLuint vao;
 	shader myShaders[] = {
@@ -96,11 +119,11 @@ int main(int argc, char** argv)
 	GLuint program = compileProgram(myShaders);
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
+	glUseProgram(program);
 
 	while (!glfwWindowShouldClose(myWindow))
 	{
-		display();
-		
+		display(&program, &vao);	
 		glfwSwapBuffers(myWindow);
 	}
 
