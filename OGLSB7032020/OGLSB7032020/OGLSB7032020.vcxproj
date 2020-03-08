@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="firsttri.cpp" />
     <ClCompile Include="firstvert.cpp" />
     <ClCompile Include="redgreenBG.cpp" />
     <ClCompile Include="ShaderReader.cpp" />

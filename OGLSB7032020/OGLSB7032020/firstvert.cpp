@@ -1,4 +1,5 @@
 //file initialised 07/03/2020
+#pragma once
 #include <GL/gl3w.h>
 #define GLFW_NO_GLU 1
 #define GLFW_INCLUDE_GLCOREARB 1
@@ -7,7 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 
-
+/*
 struct shader {
 	const char* source;
 	GLenum type;
@@ -47,7 +48,7 @@ GLuint compileProgram(shader* shaders)
 		{
 			GLsizei len;
 			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-			GLchar* log = new GLchar[len+1];
+			GLchar* log = new GLchar[len];
 			glGetShaderInfoLog(shader, len, &len, log);
 			fprintf(stderr, "%s\n", log);
 			return 0;
@@ -63,7 +64,7 @@ GLuint compileProgram(shader* shaders)
 	{
 		GLsizei len;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
-		GLchar* log = new GLchar[len+1];
+		GLchar* log = new GLchar[len];
 		glGetProgramInfoLog(program, len, &len, log);
 		fprintf(stderr, "%s\n", log);
 		return 0; 
@@ -76,6 +77,12 @@ void display(GLuint* program, GLuint* vao)
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(program[0]);
 	glDrawArrays(GL_POINTS, 0, 1);
+}
+void processInput(GLFWwindow* window) 
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	glfwSetWindowShouldClose(window, true);
+	
 }
 int main(int argc, char** argv) 
 {
@@ -110,6 +117,7 @@ int main(int argc, char** argv)
 	fprintf(stderr, "RENDERER: %s\n", (char*)glGetString(GL_RENDERER));
 
 
+	glPointSize(40.0f);
 	GLuint vao;
 	shader myShaders[] = {
 		{vertexShader, GL_VERTEX_SHADER},
@@ -121,12 +129,15 @@ int main(int argc, char** argv)
 	glBindVertexArray(vao);
 	glUseProgram(program);
 
+
 	while (!glfwWindowShouldClose(myWindow))
 	{
 		display(&program, &vao);	
+		processInput(myWindow);
 		glfwSwapBuffers(myWindow);
 	}
 
 	glDeleteProgram(program);
 	glDeleteVertexArrays(1, &vao);
 } 
+*/

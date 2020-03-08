@@ -12,4 +12,5 @@ debug.log
 *.pbd
 *.db
 *.VC
+*.VC.db
  

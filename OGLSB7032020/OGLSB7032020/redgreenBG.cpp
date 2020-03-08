@@ -1,4 +1,4 @@
-
+#pragma once
 #include <GL/gl3w.h>
 #define GLFW_NO_GLU 1
 #define GLFW_INCLUDE_GLCOREARB 1 
@@ -8,15 +8,16 @@
 #include <math.h>
 #include <string>
 
+/*
 int huechange06032020();
 
-/*int main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	fprintf(stderr, "Using main from 06032020 BG file\n");
 	huechange06032020();
 	return 0;
-} */
-/*
+} 
+
 void processInput(GLFWwindow* window) 
 {
 	
@@ -75,8 +76,8 @@ int huechange06032020()
 	}
 	return 0;
 }
-
 */
+
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
