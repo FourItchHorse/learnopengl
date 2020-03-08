@@ -2,32 +2,35 @@
 #include "ShaderReader.h"
 const char* ShaderReader::ReadShader(const char* filepath) 
 {
-	std::string shaderCode;
-	std::ifstream shaderFile;
-	shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	try
+	FILE* infile = fopen(filepath, "rb");
+	if (!infile)
 	{
-		shaderFile.open(filepath);
-		std::stringstream shaderStream;
-		shaderStream << shaderFile.rdbuf();
-		shaderFile.close();
-		shaderCode = shaderStream.str();
+		fprintf( stderr, "Unable to open file '%s,'\n", filepath);
+		return NULL;
 	}
-	catch (std::ifstream::failure e)
-	{
-		fprintf(stderr, "ERROR::SHADER_FILE::NOT_SUCCESSFULLY_READ\n");
-	}
-	return shaderCode.c_str();
+	fseek(infile, 0, SEEK_END);
+	int len = ftell(infile);
+	fseek(infile, 0, SEEK_SET);
+	GLchar* source = new GLchar[len];
+	fread(source, 1, len, infile);
+	fclose(infile);
+	source[len] = 0;
+	printf(source);
+	return const_cast<const GLchar*>(source);
 }
- GLuint ShaderReader::LoadShaders(ShaderInfo* shaders) 
+ GLuint ShaderReader::LoadShaders(ShaderInfo* myShaders) 
 {
+	if (myShaders == NULL) return 0;
+	ShaderInfo* shaders = myShaders;
 	GLuint program = glCreateProgram();
 	while (shaders->type != GL_NONE)
 	{
 		GLuint shader = glCreateShader(shaders->type);
 		shaders->shader = shader;
-		const char* shaderSrc = ReadShader(shaders->filepath);
-		glShaderSource(shader, 1, &shaderSrc, NULL);
+		if (shaders->filepath != NULL) {
+			const char* shaderSrc = ReadShader(shaders->filepath);
+			glShaderSource(shader, 1, &shaderSrc, NULL);
+		}
 		glCompileShader(shader);
 		GLint compiled; glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 		if(!compiled)

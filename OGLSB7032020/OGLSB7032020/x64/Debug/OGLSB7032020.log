@@ -1,2 +1,7 @@
-﻿  ShaderReader.cpp
+﻿  firsttri.cpp
+C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\firsttri.cpp(12,46): warning C4305: 'initializing': truncation from 'double' to 'const GLfloat'
+  firstvert.cpp
+  redgreenBG.cpp
+  ShaderReader.cpp
+  Generating Code...
   OGLSB7032020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\x64\Debug\032020OGLSB7.exe

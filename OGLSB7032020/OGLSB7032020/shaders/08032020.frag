@@ -1,6 +1,6 @@
 #version 450 core
-out vec4 color;
+layout (location = 0) out vec4 out_color;
 void main (void)
 {
-	color = vec4(0.0, 0.8, 1.0, 1.0);
+	out_color = vec4(0.0, 0.8, 1.0, 1.0);
 }

@@ -1,8 +1,9 @@
 #version 450 core
+layout (location = 0) in vec2 pos;
+layout (location = 1) in vec3 col;
+layout (location = 2) out vec3 Col;
 void main (void)
 {
-	const vec4 vertices[3] = vec4[3]{vec4(0.25, -0.25, 0.5, 1.0),
-					 vec4(0.25, -0.25, 0.5, 1.0),
-					 vec4(0.25, 0.25,  0.5, 1.0)};
-	gl_Position = vertices[gl_VertexID];
+	Col = col;
+	gl_Position = vec4(pos, 0.5, 1.0);
 }

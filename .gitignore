@@ -13,4 +13,5 @@ debug.log
 *.db
 *.VC
 *.VC.db
+*.ipch
  
