@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include <GL/gl3w.h>
 #define GLFW_NO_GLU 1
@@ -8,7 +9,7 @@
 #include <math.h>
 #include <string>
 
-/*
+
 int huechange06032020();
 
 int main(int argc, char** argv)
@@ -72,12 +73,13 @@ int huechange06032020()
 	while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS)
 	{
 		display();
+		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
 	return 0;
 }
-*/
 
+*/
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 

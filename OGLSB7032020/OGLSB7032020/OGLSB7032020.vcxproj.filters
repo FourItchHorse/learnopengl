@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ShaderReader.cpp" />
+    <ClCompile Include="firsttri.cpp">
+      <Filter>0708032020</Filter>
+    </ClCompile>
+    <ClCompile Include="firstvert.cpp">
+      <Filter>0708032020</Filter>
+    </ClCompile>
+    <ClCompile Include="redgreenBG.cpp">
+      <Filter>0708032020</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ShaderReader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="0708032020">
+      <UniqueIdentifier>{1b2c098c-171c-4d81-b0b3-9deff20d720a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0908032020">
+      <UniqueIdentifier>{d396f70d-4ec9-43f8-8746-b7d4d4ab4b59}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

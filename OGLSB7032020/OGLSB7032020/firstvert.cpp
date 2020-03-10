@@ -5,10 +5,11 @@
 #define GLFW_INCLUDE_GLCOREARB 1
 #include <GLFW/glfw3.h>
 
+
+/*
 #include <stdio.h>
 #include <math.h>
 
-/*
 struct shader {
 	const char* source;
 	GLenum type;

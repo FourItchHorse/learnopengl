@@ -1,6 +1,4 @@
-﻿  firsttri.cpp
-C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\firsttri.cpp(27,19): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\firsttri.cpp(28,20): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\firsttri.cpp(29,18): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\firsttri.cpp(47,47): warning C4305: 'initializing': truncation from 'double' to 'const GLfloat'
+﻿  redgreenBG.cpp
+C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\redgreenBG.cpp(30,23): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\redgreenBG.cpp(29,32): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
   OGLSB7032020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\Debug\032020OGLSB7.exe

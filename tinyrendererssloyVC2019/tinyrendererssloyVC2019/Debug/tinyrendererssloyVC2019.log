@@ -1,0 +1,6 @@
+﻿  main.cpp
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(8,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(9,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(16,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(17,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  tinyrendererssloyVC2019.vcxproj -> C:\source\repos\c++\learnopengl\tinyrendererssloyVC2019\Debug\tinyrendererssloyVC2019.exe
