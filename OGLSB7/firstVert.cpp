@@ -30,11 +30,23 @@ void compileShader()
 {
 	vertex_shader = glCreateShader(GL_VERTEX);
 	glShaderSource(vertex_shader, 1, vertexShaderSource, NULL);
-	glCompile(vertex_shader);
+	glCompileShader(vertex_shader);
 
 	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment_shader, 1, fragmentShaderSource, NULL);
-	glCompile(fragment_shader);
+	glCompileShader(fragment_shader);
+
+	GLuint program = glCreateProgram();
+	glAttachShader(program, vertex_shader);
+	glAttachShader(program, fragment_shader);
+	glLinkProgram(program);
+
+	glDeleteShader(vertex_shader);
+	glDeleteShader(fragment_shader);
+	
+	return program;	
+
+
 }
 void init() {
 }
