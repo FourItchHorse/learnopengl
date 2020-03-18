@@ -8,7 +8,7 @@ Model* model = NULL;
 const int width = 800;
 const int height = 800;
 
-void line(int x0, int x1, int y0, int y1, TGAImage &image, TGAColor color) 
+void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) 
 {
 	bool steep = false;
 	if (std::abs(y1 - y0) > std::abs(x1 - x0)) {
@@ -22,7 +22,8 @@ void line(int x0, int x1, int y0, int y1, TGAImage &image, TGAColor color)
 	}
 	int dy = y1 - y0;
 	int dx = x1 - x0;
-	int D = std::abs(dy)*2 - dx; 
+	int D = std::abs(dy)*2;
+	int d = 0;
 	int y = y0;
 
 #ifndef __DEBUG
@@ -33,21 +34,21 @@ void line(int x0, int x1, int y0, int y1, TGAImage &image, TGAColor color)
 		for (int x = x0; x <= x1; x += 1)
 		{
 			image.set(y, x, color); 
-			
-			if (D > 0) {
+			d += D;
+			if (d > 0) {
 				y += (y1 > y0 ? 1 : -1);
-				D -= 2 * dx;
+				d -= dx*2;
 			}
-			D += 2 * dy;
 		}
 	else for (int x = x0; x <= x1; x += 1)
 	{
-			image.set(x, y, color);
-		if (D > 0) {
+		image.set(x, y, color);
+
+		d += D;
+		if (d > 0) {
 			y += (y1 > y0?1:-1);
-			D -= 2 * dx;
-		}
-		D +=  2*dy; 
+			d -= dx*2;
+		} 
 	}
 
 #ifndef __DEBUG
@@ -74,10 +75,10 @@ int main(int argc, char** argv)
 		{
 			Vec3f v0 = model->vert(face[j]);
 			Vec3f v1 = model->vert(face[(j+1)%3]);
-			int x0 = (v0.x + 1)*width/2;
-			int y0 = (v0.y + 1)*height/2; 
-			int x1 = (v1.x + 1)*width /2;
-			int y1 = (v1.y + 1)*height/2;
+			int x0 = (v0.x + 1)*width/2.;
+			int y0 = (v0.y + 1)*height/2.; 
+			int x1 = (v1.x + 1)*width /2.;
+			int y1 = (v1.y + 1)*height/2.;
 			line(x0, y0, x1, y1, image, white);
 		}
 	}

@@ -1,2 +1,6 @@
-﻿  model.cpp
+﻿  main.cpp
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(78,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(79,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(80,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\source\repos\C++\learnopengl\tinyrendererssloyVC2019\tinyrendererssloyVC2019\main.cpp(81,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   tinyrendererssloyVC2019.vcxproj -> C:\source\repos\c++\learnopengl\tinyrendererssloyVC2019\x64\Debug\tinyrendererssloyVC2019.exe
