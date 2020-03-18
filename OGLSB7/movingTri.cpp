@@ -64,9 +64,8 @@ void display() {
 	glUseProgram(program);
 	GLfloat attrib[] = {sin(currentTime) * 0.5f,
 			    cos(currentTime) * 0.6f,
-			    tan(currentTime) * 0.00001f, 
-			    	               0.0f};
-	glVertexAttrib4fv(0, &attrib);
+			    0.0f, 0.0f};
+	glVertexAttrib4fv(0, attrib);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 

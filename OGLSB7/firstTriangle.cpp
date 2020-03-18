@@ -61,13 +61,10 @@ void display() {
 				 cos(currentTime) * 0.5f + 0.5f,
 				0.0, 1.0f};
 	glClearBufferfv(GL_COLOR, 0, color);
+	glVertexAttrib4fv(0, attrib);
 	glUseProgram(program);
-	GLfloat attrib[] = {sin(currentTime) * 0.5f,
-			    cos(currentTime) * 0.6f,
-			    tan(currentTime) * 0.00001f, 
-			    	               0.0f};
-	glVertexAttrib4fv(0, &attrib);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
 }
 
 int main(int argc, char** argv) {
