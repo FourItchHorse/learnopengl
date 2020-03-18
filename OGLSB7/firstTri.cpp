@@ -10,7 +10,10 @@ static const GLchar* vertexShaderSource = R"glsl(
 #version 450 core
 void main(void) 
 {
-	gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
+	const vec4 vertices[3] = vec4[3](vec4(0.25, -0.25, 0.5, 1.0),
+				         vec4(-0.25, -0.25, 0.5, 1.0),
+					 vec4(0.25, 0.25, 0.5, 1.0));
+	gl_Position = vertices[gl_VertexID];
 }
 )glsl"; 
 static const GLchar* fragmentShaderSource = R"glsl(
@@ -45,7 +48,6 @@ void init() {
 	program = compileProgram();
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glPointSize(64.0f);
 }
 void shutdown() {
 	glDeleteVertexArrays(1, &vao);
@@ -60,7 +62,7 @@ void display() {
 	glClearBufferfv(GL_COLOR, 0, color);
 
 	glUseProgram(program);
-	glDrawArrays(GL_POINTS, 0, 1);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 }
 
