@@ -9,31 +9,42 @@ GLuint program, vao;
 static const GLchar* vertexShaderSource = R"glsl(
 #version 450 core
 layout (location = 0) in vec4 offset;
+layout (location = 1) in vec4 color;
+out vec4 vs_color;
 void main(void) 
 {
 	const vec4 vertices[3] = vec4[3](vec4(0.25, -0.25, 0.5, 1.0),
 				         vec4(-0.25, -0.25, 0.5, 1.0),
 					 vec4(0.25, 0.25, 0.5, 1.0));
 	gl_Position = vertices[gl_VertexID] + offset;
+	vs_color = color;
 }
 )glsl"; 
 static const GLchar* fragmentShaderSource = R"glsl(
 #version 450 core
+in vec4 vs_color
 out vec4 color;
 void main(void) 
 {
-	color = vec4(0.0, 0.8, 1.0, 1.0);
+	color = vs_color;
 }
 )glsl";
 GLuint compileProgram() 
 {
+	GLint success;
+	GLchar log[512];
+
 	GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex_shader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertex_shader);
+	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
+	 
 
 	GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment_shader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragment_shader);
+	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
+	
 
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vertex_shader);
@@ -57,16 +68,17 @@ void shutdown() {
 }
 void display() {
 	float currentTime = (float) glfwGetTime();
-	const GLfloat color[] = {sin(currentTime) * 0.5f + 0.5f, 
-				 cos(currentTime) * 0.5f + 0.5f,
-				0.0, 1.0f};
+	float redY = sin(currentTime) * 0.5f + 0.5f;
+	float greenX = cos(currentTime) * 0.5f + 0.5f;
+	const GLfloat color[] = {redY, greenX, 0.0, 1.0f};
 	glClearBufferfv(GL_COLOR, 0, color);
-	glUseProgram(program);
 	GLfloat attrib[] = {sin(currentTime) * 0.5f,
 			    cos(currentTime) * 0.6f,
-			    tan(currentTime) * 0.00001f, 
-			    	               0.0f};
-	glVertexAttrib4fv(0, &attrib);
+			    0.0f, 0.0f};
+	glVertexAttrib4fv(0, attrib);
+	GLfloat orange[] = {1 - redY, 1 - greenX, 0.5, 1.0f};
+	glVertexAttrib4fv(1, orange);
+	glUseProgram(program);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
