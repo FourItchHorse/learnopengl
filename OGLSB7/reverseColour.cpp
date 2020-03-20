@@ -22,33 +22,7 @@ void main(void)
 	gl_Position = vertices[gl_VertexID] + offset;
 	vs_out.color = color;
 }
-)glsl";
-static const GLchar* tessControlShaderSrc = R"glsl(
-#version 450 core
-layout (vertices = 3) out;
-void main(void)
-{
-if(gl_InvocationID == 0)
-{
-	gl_TessLevelInner[0] = 5.0;
-	gl_TessLevelOuter[0] = 5.0;
- 	gl_TessLevelOuter[1] = 5.0;
-	gl_TessLevelOuter[2] = 5.0;
-}
-gl_out[gl_InvocationID].gl_Position =
-	gl_in[gl_InvocationID].gl_Position;
-}
-)glsl";
-static const GLchar* tessEvalShaderSrc= R"glsl(
-#version 450 core
-layout (triangles, equal_spacing, cw) in;
-void main (void)
-{
-gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position +
-	           gl_TessCoord.y * gl_in[1].gl_Position +
-	           gl_TessCoord.z * gl_in[2].gl_Position);
-}
-)glsl";
+)glsl"; 
 static const GLchar* fragmentShaderSource = R"glsl(
 #version 450 core
 in VS_OUT
@@ -61,43 +35,32 @@ void main(void)
 	color = fs_in.color;
 }
 )glsl";
-void compileShader(const char* source, GLenum type, GLuint program) 
+GLuint compileProgram() 
 {
-	GLuint myShader = glCreateShader(type);
-	glShaderSource(myShader, 1, &source, NULL);
-	glCompileShader(myShader);
-	GLint compiled;
-	GLchar log[1024];
-	glGetShaderiv(myShader, GL_COMPILE_STATUS, &compiled);
-	if(!compiled) {
-	glGetShaderInfoLog(myShader, 1024, NULL, log);
-	fprintf(stderr,"\n%s\n", log);
-	}
-	glAttachShader(program, myShader);
-	glDeleteShader(myShader);
+	GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex_shader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertex_shader);
 
-}
-void linkProgram(GLuint program) 
-{
+	GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment_shader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragment_shader);
+
+	GLuint program = glCreateProgram();
+	glAttachShader(program, vertex_shader);
+	glAttachShader(program, fragment_shader);
 	glLinkProgram(program);
-	int linked;
-	GLchar log[1024];
-	glGetShaderiv(program, GL_LINK_STATUS, &linked);
-	if(!linked) {
-	glGetProgramInfoLog(program, 1024, NULL, log);
-	fprintf(stderr,"\n%s\n", log);
-	}	
+
+	glDeleteShader(vertex_shader);
+	glDeleteShader(fragment_shader);
+	
+	return program;	
 }
 void init() {
-	program = glCreateProgram();
-        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program);    		
-        compileShader(tessControlShaderSrc, GL_TESS_CONTROL_SHADER, program);
-		compileShader(tessEvalShaderSrc, GL_TESS_EVALUATION_SHADER, program);  		
-        compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, program);
-	linkProgram(program);	
+	program = compileProgram();
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	GLfloat orange[] = {0.5f, 0.5f, 0.0f, 1.0f}; 
+	glVertexAttrib4fv(1, orange);
 }
 void shutdown() {
 	glDeleteVertexArrays(1, &vao);
@@ -118,7 +81,7 @@ void display() {
 	GLfloat orange[] = {1 - redY, 1 - greenX, 0.5, 1.0f};
 	glVertexAttrib4fv(1, orange);
 	glUseProgram(program);
-	glDrawArrays(GL_PATCHES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 
