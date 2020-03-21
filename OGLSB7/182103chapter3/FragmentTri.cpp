@@ -23,42 +23,14 @@ void main(void)
 	vs_out.color = color;
 }
 )glsl";
-static const GLchar* tessControlShaderSrc = R"glsl(
-#version 450 core
-layout (vertices = 3) out;
-void main(void)
-{
-if(gl_InvocationID == 0)
-{
-	gl_TessLevelInner[0] = 5.0;
-	gl_TessLevelOuter[0] = 5.0;
- 	gl_TessLevelOuter[1] = 5.0;
-	gl_TessLevelOuter[2] = 5.0;
-}
-gl_out[gl_InvocationID].gl_Position =
-	gl_in[gl_InvocationID].gl_Position;
-}
-)glsl";
-static const GLchar* tessEvalShaderSrc= R"glsl(
-#version 450 core
-layout (triangles, equal_spacing, cw) in;
-void main (void)
-{
-gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position +
-	           gl_TessCoord.y * gl_in[1].gl_Position +
-	           gl_TessCoord.z * gl_in[2].gl_Position);
-}
-)glsl";
 static const GLchar* fragmentShaderSource = R"glsl(
 #version 450 core
-in VS_OUT
-{
-	vec4 color;
-}fs_in;
 out vec4 color;
 void main(void) 
 {
-	color = fs_in.color;
+	color = vec4(sin(gl_FragCoord.x * 0.25) * 0.5 + 0.5,
+		     cos(gl_FragCoord.y * 0.25) * 0.5 + 0.5,
+		     sin(gl_FragCoord.x * 0.15) * cos(gl_FragCoord.y * 0.15), 0.0f);
 }
 )glsl";
 void compileShader(const char* source, GLenum type, GLuint program) 
@@ -90,14 +62,11 @@ void linkProgram(GLuint program)
 }
 void init() {
 	program = glCreateProgram();
-        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program);    		
-        compileShader(tessControlShaderSrc, GL_TESS_CONTROL_SHADER, program);
-		compileShader(tessEvalShaderSrc, GL_TESS_EVALUATION_SHADER, program);  		
+        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program); 		
         compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, program);
 	linkProgram(program);	
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 void shutdown() {
 	glDeleteVertexArrays(1, &vao);
@@ -113,10 +82,8 @@ void display() {
 	glClearBufferfv(GL_COLOR, 0, color);
 	GLfloat attrib[] = {sin(currentTime) * 0.5f,
 			    cos(currentTime) * 0.6f,
-			    0.0f, 0.0f};
+			    0.0f, 0.0f };
 	glVertexAttrib4fv(0, attrib);
-	GLfloat orange[] = {1 - redY, 1 - greenX, 0.5, 1.0f};
-	glVertexAttrib4fv(1, orange);
 	glUseProgram(program);
 	glDrawArrays(GL_PATCHES, 0, 3);
 }
