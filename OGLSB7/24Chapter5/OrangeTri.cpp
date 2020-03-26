@@ -20,7 +20,7 @@ static const GLchar* fragmentShaderSource = R"glsl(
 out vec4 outCol;
 void main (void) 
 {
-	outCol = vec4(1.0, 1.0, 0.0, 1.0);
+	outCol = vec4(1.0, 0.5, 0.0, 1.0);
 }
 )glsl";
 void compileShader(const char* source, GLenum type, GLuint program) 
@@ -61,7 +61,6 @@ void init() {
 	glBindVertexArray(vao);
 	glCreateBuffers(1, &buffer); 
 	glNamedBufferStorage(buffer, 1024 * 1024, NULL, GL_MAP_WRITE_BIT);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	void * ptr = glMapNamedBuffer(buffer, GL_WRITE_ONLY);
 	static const float data[] = 
 	{
@@ -86,7 +85,6 @@ void display() {
 	const GLfloat color[] = {0.0, 0.5, 0.2, 1.0f};
 	glClearBufferfv(GL_COLOR, 0, color);
 	glUseProgram(program);
-	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
