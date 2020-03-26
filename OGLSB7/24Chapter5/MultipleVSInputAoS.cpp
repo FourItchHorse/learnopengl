@@ -6,15 +6,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-GLuint program, vao, buffer[2];
+GLuint program, vao, buffer;
 static const GLchar* vertexShaderSource = R"glsl(
 #version 450 core
-layout (location = 0) in vec4 position;
+layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 colour;
 out vec3 vsCol;
 void main (void)
 {
-	gl_Position = position;
+	gl_Position = vec4(position, 1.0);
 	vsCol = colour;
 }
 )glsl";
@@ -61,34 +61,38 @@ void init() {
         compileShader(vertexShaderSource, GL_VERTEX_SHADER, program); 
 	compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, program);
 	linkProgram(program);	
-	static const float positions[] = 
+	struct vertex
 	{
-			0.25, -0.25, 0.5, 1.0,
-	       -0.25, -0.25, 0.5, 1.0,
-	        0.25, 0.25, 0.5, 1.0,
+		float x; 
+		float y; 
+		float z; 
+
+		float r; 
+		float g; 
+		float b;
 	};
-	static const float colours[] = 
+	static const float vertices[] = 
 	{
-		0.1, 0.5, 0.0, 
-		0.5, 1.0, 0.5,  
-		0.0, 0.5, 1.0, 
+			0.25, -0.25, 0.5, 1.0, 0.5, 0.0, 
+	       -0.25, -0.25, 0.5, 0.5, 1.0, 0.5,  
+	        0.25, 0.25, 0.5, 0.0, 0.5, 1.0, 
 	};
 	glCreateVertexArrays(1, &vao);
-	glCreateBuffers(2, buffer); 
-	
-	glNamedBufferStorage(buffer[0], sizeof(positions), positions, 0);
-	glVertexArrayVertexBuffer(vao, 0, buffer[0], 0, sizeof(vec4));
-	glVertexArrayAttribFormat(vao, 0, 4, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vao, 0, 0);
-	glEnableVertexArrayAttrib(vao, 0);
-
-	glNamedBufferStorage(buffer[1], sizeof(colours), colours, 0);
-	glVertexArrayVertexBuffer(vao, 1, buffer[1], 0, sizeof(vec3));
-	glVertexArrayAttribFormat(vao, 1, 3, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vao, 1, 1);
-	glEnableVertexArrayAttrib(vao, 1);
-
+	glCreateBuffers(1, &buffer); 
 	glBindVertexArray(vao);
+
+	glNamedBufferStorage(buffer, sizeof(vertices), vertices, 0);
+	
+	glVertexArrayAttribBinding(vao, 0, 0);
+	glVertexArrayAttribFormat(vao, 0, 3, GL_FLOAT, GL_FALSE, offsetof(vertex, x));
+	glEnableVertexAttribArray(0);
+
+	glVertexArrayAttribBinding(vao, 1, 0);
+	glVertexArrayAttribFormat(vao, 1, 3, GL_FLOAT, GL_FALSE, offsetof(vertex, r));
+	glEnableVertexAttribArray(1);
+
+	glVertexArrayVertexBuffer(vao, 0, buffer, 0, sizeof(vertex));
+	
        	
 }
 void shutdown() {
