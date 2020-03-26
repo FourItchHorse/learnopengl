@@ -2,14 +2,26 @@
 #define GLFW_NO_GLU 1
 #define GLFW_INCLUDE_GLCOREARB 1
 #include <GLFW/glfw3.h>
+#include <vmath/vmath.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-GLuint program, vao;
+GLuint program, vao, buffer;
 static const GLchar* vertexShaderSource = R"glsl(
-
+#version 450 core
+layout (location = 0) in vec4 position;
+void main (void)
+{
+	gl_Position = position;
+}
 )glsl";
 static const GLchar* fragmentShaderSource = R"glsl(
+#version 450 core
+out vec4 outCol;
+void main (void) 
+{
+	outCol = vec4(1.0, 1.0, 0.0, 1.0);
+}
 )glsl";
 void compileShader(const char* source, GLenum type, GLuint program) 
 {
@@ -22,7 +34,7 @@ void compileShader(const char* source, GLenum type, GLuint program)
 	GLchar log[1024];
 	glGetShaderInfoLog(myShader, 1024, NULL, log);
 	fprintf(stderr,"\n%s\n", log);
-	delete [] log;
+	//delete [] log;
 	}
 	glAttachShader(program, myShader);
 	glDeleteShader(myShader);
@@ -37,20 +49,32 @@ void linkProgram(GLuint program)
 	GLchar log[1024];
 	glGetProgramInfoLog(program, 1024, NULL, log);
 	fprintf(stderr,"\n%s\n", log);
-	delete [] log;
+	//delete [] log;
 	}	
 }
 void init() {
 	program = glCreateProgram();
-        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program);    	              compileShader(tessControlShaderSrc, GL_TESS_CONTROL_SHADER, program);
-	compileShader(tessEvalShaderSrc, GL_TESS_EVALUATION_SHADER, program); 
-	compileShader(geometryShaderSource, GL_GEOMETRY_SHADER, program);
+        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program); 
 	compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, program);
-
 	linkProgram(program);	
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glPointSize(5.0f);
+	glCreateBuffers(1, &buffer); 
+	glNamedBufferStorage(buffer, 1024 * 1024, NULL, GL_MAP_WRITE_BIT);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	void * ptr = glMapNamedBuffer(buffer, GL_WRITE_ONLY);
+	static const float data[] = 
+	{
+			0.25, -0.25, 0.5, 1.0,
+	       -0.25, -0.25, 0.5, 1.0,
+	        0.25, 0.25, 0.5, 1.0
+	};
+	memcpy(ptr, data, sizeof(data));
+	glUnmapNamedBuffer(buffer);
+	glVertexArrayVertexBuffer(vao, 0, buffer, 0, sizeof(vec4));
+	glVertexArrayAttribFormat(vao, 0, 4, GL_FLOAT, GL_FALSE, 0);
+	glEnableVertexArrayAttrib(vao, 0);
+       	
 }
 void shutdown() {
 	glDeleteVertexArrays(1, &vao);
@@ -59,19 +83,11 @@ void shutdown() {
 }
 	
 void display() {
-	float currentTime = (float) glfwGetTime();
-	float redY = sin(currentTime) * 0.5f + 0.5f;
-	float greenX = cos(currentTime) * 0.5f + 0.5f;
-	const GLfloat color[] = {redY, greenX, 0.0, 1.0f};
+	const GLfloat color[] = {0.0, 0.5, 0.2, 1.0f};
 	glClearBufferfv(GL_COLOR, 0, color);
-	GLfloat attrib[] = {sin(currentTime) * 0.5f,
-			    cos(currentTime) * 0.6f,
-			    0.0f, 0.0f};
-	glVertexAttrib4fv(0, attrib);
-	GLfloat orange[] = {1 - redY, 1 - greenX, 0.5, 1.0f};
-	glVertexAttrib4fv(1, orange);
 	glUseProgram(program);
-	glDrawArrays(GL_PATCHES, 0, 3);
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 

@@ -42,15 +42,11 @@ void linkProgram(GLuint program)
 }
 void init() {
 	program = glCreateProgram();
-        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program);    	              compileShader(tessControlShaderSrc, GL_TESS_CONTROL_SHADER, program);
-	compileShader(tessEvalShaderSrc, GL_TESS_EVALUATION_SHADER, program); 
-	compileShader(geometryShaderSource, GL_GEOMETRY_SHADER, program);
-	compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, program);
-
+        compileShader(vertexShaderSource, GL_VERTEX_SHADER, program); 
+		compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER, program);
 	linkProgram(program);	
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glPointSize(5.0f);
 }
 void shutdown() {
 	glDeleteVertexArrays(1, &vao);
@@ -59,19 +55,10 @@ void shutdown() {
 }
 	
 void display() {
-	float currentTime = (float) glfwGetTime();
-	float redY = sin(currentTime) * 0.5f + 0.5f;
-	float greenX = cos(currentTime) * 0.5f + 0.5f;
 	const GLfloat color[] = {redY, greenX, 0.0, 1.0f};
 	glClearBufferfv(GL_COLOR, 0, color);
-	GLfloat attrib[] = {sin(currentTime) * 0.5f,
-			    cos(currentTime) * 0.6f,
-			    0.0f, 0.0f};
-	glVertexAttrib4fv(0, attrib);
-	GLfloat orange[] = {1 - redY, 1 - greenX, 0.5, 1.0f};
-	glVertexAttrib4fv(1, orange);
 	glUseProgram(program);
-	glDrawArrays(GL_PATCHES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 
