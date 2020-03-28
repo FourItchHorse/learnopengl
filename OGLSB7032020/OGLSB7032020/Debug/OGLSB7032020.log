@@ -1,4 +1,2 @@
-﻿  redgreenBG.cpp
-C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\redgreenBG.cpp(30,23): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\redgreenBG.cpp(29,32): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+﻿  spinningcube.cpp
   OGLSB7032020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7032020\OGLSB7032020\Debug\032020OGLSB7.exe

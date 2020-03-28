@@ -158,6 +158,7 @@
     <ClCompile Include="firstvert.cpp" />
     <ClCompile Include="redgreenBG.cpp" />
     <ClCompile Include="ShaderReader.cpp" />
+    <ClCompile Include="spinningcube.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReader.h" />

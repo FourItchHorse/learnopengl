@@ -11,6 +11,9 @@
     <ClCompile Include="redgreenBG.cpp">
       <Filter>0708032020</Filter>
     </ClCompile>
+    <ClCompile Include="spinningcube.cpp">
+      <Filter>27032020</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReader.h" />
@@ -21,6 +24,9 @@
     </Filter>
     <Filter Include="0908032020">
       <UniqueIdentifier>{d396f70d-4ec9-43f8-8746-b7d4d4ab4b59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="27032020">
+      <UniqueIdentifier>{56dcb2dd-b937-4e9b-9262-31519e0d179f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
