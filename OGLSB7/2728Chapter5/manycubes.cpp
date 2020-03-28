@@ -40,7 +40,7 @@ void init()
 		} fs_in;
 		void main (void) {
 			color = fs_in.color;
-			}
+		}
 	)glsl";
 	program = glCreateProgram();
 	compileShader(program, vShaderSrc, GL_VERTEX_SHADER);
@@ -118,6 +118,7 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glBindVertexArray(vao);
+	mv_matrix = translate(0.0f, 0.0f, -20.0f);
 }
 void display() 
 {
@@ -126,14 +127,18 @@ void display()
 	glUseProgram(program);
 	glUniformMatrix4fv(prjLoc, 1, GL_FALSE, proj_matrix);
 	
-	float f = (float)glfwGetTime() * 0.3f;
-	mv_matrix = translate(0.0, 0.0, -4.0) * 
-	/*translate(sinf(2.1f * f) * 2.0f, cosf(1.7f * f) * 2.0f, sinf(1.3f * f) * cosf(1.5f * f) * 2.0f) **/ 
-	rotate( cosf(2.1 * f), 0.0f, 1.0f, 0.0f) * 
-	rotate( sinf(1.7 * f), 1.0f, 0.0f, 0.0f);
+	for(int i = 0; i < 24; i++) {
+	float f = (float)glfwGetTime() * 0.03f;
+	mv_matrix = translate(0.0f, 0.0, 10.0f - (i * 5)) *
+         rotate(0.0f, 1.0f, 0.0f, (float)glfwGetTime() * 4.5f) * 
+	 rotate(1.0, 0.0, 0.0, (float)glfwGetTime() * 2.1f) *
+	 rotate(0.0, 0.0, 1.0,  (float) glfwGetTime() * (i * 0.1)) * 
+		translate(sinf(2.1 * f) * 2.0f,
+		cosf(1.7f * f) * 2.0f,
+		sinf(1.3 * f) * cosf(1.5 * f) * 2.0f);
 	glUniformMatrix4fv(mvLoc, 1, GL_FALSE, mv_matrix);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-	printf("%f\r", f);
+	}
 }
 void shutdown() 
 {
