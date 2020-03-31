@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 
-/*
+
 #include <stdio.h>
 #include <math.h>
 
@@ -109,7 +109,7 @@ int main(int argc, char** argv)
 
 	if (gl3wInit())
 	{
-		fprintf(stderr, "UNABLE TO INIT OPENGL: %d\n", gl3wInit());
+		fprintf(stderr, "UNABLE TO INIT OPENGL: %i\n", gl3wInit());
 		return -1;
 	}
 
@@ -142,4 +142,4 @@ int main(int argc, char** argv)
 	glDeleteVertexArrays(1, &vao);
 } 
 
-*/
+

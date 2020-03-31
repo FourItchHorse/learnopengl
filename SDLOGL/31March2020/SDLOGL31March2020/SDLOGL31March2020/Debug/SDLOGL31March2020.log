@@ -1,0 +1,10 @@
+﻿  SDLOGL31March2020.cpp
+C:\vcpkg\installed\x86-windows\include\vmath\vmath.h(835,70): error C2039: 'vec4': is not a member of '`global namespace''
+C:\vcpkg\installed\x86-windows\include\vmath\vmath.h(835,61): error C2064: term does not evaluate to a function taking 4 arguments
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(144,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(145,53): error C2065: 'M_PI': undeclared identifier
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(145,62): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(151,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(152,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(154,14): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\31March2020\SDLOGL31March2020\SDLOGL31March2020\SDLOGL31March2020.cpp(154,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data

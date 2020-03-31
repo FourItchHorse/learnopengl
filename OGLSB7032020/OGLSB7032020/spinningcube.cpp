@@ -1,3 +1,4 @@
+/*
 #include <GL/gl3w.h>
 #define GLFW_NO_GLU 1
 #define GLFW_INCLUDE_GLCOREARB 1
@@ -177,3 +178,5 @@ int main(int argc, char** argv)
 	}
 	shutdown();
 }
+
+*/
