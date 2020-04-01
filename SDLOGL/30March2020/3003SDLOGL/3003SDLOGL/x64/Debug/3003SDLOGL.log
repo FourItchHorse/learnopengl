@@ -1,9 +1,9 @@
 ﻿  31032020.cpp
-C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(17,1): warning C4154: deletion of an array expression; conversion to pointer supplied
-C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(136,77): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(140,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(140,36): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(140,123): error C2065: 'M_PI': undeclared identifier
-C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(140,95): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  OGLScene.cpp
-  Generating Code...
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(145,39): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(146,26): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(147,25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(149,15): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(149,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(154,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\3003SDLOGL\31032020.cpp(155,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  3003SDLOGL.vcxproj -> C:\source\repos\C++\learnopengl\SDLOGL\30March2020\3003SDLOGL\x64\Debug\3003SDLOGL.exe
