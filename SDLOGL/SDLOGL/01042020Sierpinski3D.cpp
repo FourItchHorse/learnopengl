@@ -72,7 +72,9 @@ class Sierpinski3D : public OGLScene
 			color = fs_in.color;
 		}
 		)glsl";
+		const GLchar* gShaderSource = R"glsl(
 
+		)glsl";
 		vec3 v[4] = { vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5), 
 			            vec3(0.0, 0.5, -0.5), vec3(0.0, 0.0, 0.5) };
 		divide_tetra(v[0], v[1], v[2], v[3], NDivisions);
@@ -97,7 +99,7 @@ class Sierpinski3D : public OGLScene
 		glUniformMatrix4fv(proj, 1, GL_FALSE, proj_matrix);
 
 		view = glGetAttribLocation(program, "view_matrix");
-	    view_matrix = mat4_lookat(vec3(0.0f, 2.0f, -50.0f), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+	    view_matrix = mat4_lookat(vec3(0.0f, 2.0f, -5.0f), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
 		glUniformMatrix4fv(view, 1, GL_FALSE, view_matrix);
 
 		mLoc = glGetAttribLocation(program, "model_matrix");
@@ -110,15 +112,21 @@ class Sierpinski3D : public OGLScene
 
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.0, 0.5, 0.5, 1.0);
-		cameraZ = 50000.0f;
+		cameraY = 2.0f;
+		glPointSize(15.0f);
 	}
 
 	void processInput(SDL_Event action)
 	{
 		if (action.type == SDL_KEYDOWN)
 		{
-			if (action.key.keysym.sym == SDLK_DOWN) cameraZ /= 10;
-			if (action.key.keysym.sym == SDLK_UP) cameraZ *= 10;
+			float increment = 0.1f;
+			if (action.key.keysym.sym == SDLK_DOWN) cameraY += increment;
+			if (action.key.keysym.sym == SDLK_UP) cameraY -= increment; 
+			if (action.key.keysym.sym == SDLK_RIGHT) cameraX += increment;
+			if (action.key.keysym.sym == SDLK_LEFT) cameraX -= increment;
+			if (action.key.keysym.sym == SDLK_a) cameraZ -= increment;
+			if (action.key.keysym.sym == SDLK_d) cameraZ += increment;
 		}
 	}
 	void render(float currentTime)
@@ -129,13 +137,14 @@ class Sierpinski3D : public OGLScene
 
 		glUniformMatrix4fv(2, 1, GL_FALSE, proj_matrix);
 
+		view_matrix = mat4_lookat(vec3(cameraX, cameraY, cameraZ), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
 		glUniformMatrix4fv(3, 1, GL_FALSE, view_matrix);
 
-		model *= rotate(0.0, 1.0, 0.0, 0.01f) *
-			rotate(0.0, 0.0, 1.0,  0.0001f);
+		model *= rotate(0.0, 1.0, 0.0, 0.001f) *
+			rotate(0.0, 0.0, 1.0, 0.0001f);
 		glUniformMatrix4fv(4, 1, GL_FALSE, model);
 
-		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+		glDrawArrays(GL_POINTS, 0, NumVertices);
 	}
 
 private:
@@ -149,14 +158,17 @@ private:
 	mat4 proj_matrix;
 	mat4 view_matrix;
 	mat4 model;
+	GLfloat cameraY;
+	GLfloat cameraX;
 	GLfloat cameraZ;
 };
 
 DECLARE_MAIN(Sierpinski3D);
+
 int main(int argc, char** argv)
 {
 	Sierpinski3D* app = new Sierpinski3D();
 	app->run(app);
 	delete app;
 	return 0;
-}
+} 

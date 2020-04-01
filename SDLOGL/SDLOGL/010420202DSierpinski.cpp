@@ -92,7 +92,8 @@ private:
 };
 
 //DECLARE_MAIN(Sierpinski2D);
-/*int main(int argc, char** argv) 
+/*
+int main(int argc, char** argv) 
 {
 	Sierpinski2D* app = new Sierpinski2D();
 	app->run(app);
