@@ -72,9 +72,6 @@ class Sierpinski3D : public OGLScene
 			color = fs_in.color;
 		}
 		)glsl";
-		const GLchar* gShaderSource = R"glsl(
-
-		)glsl";
 		vec3 v[4] = { vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5), 
 			            vec3(0.0, 0.5, -0.5), vec3(0.0, 0.0, 0.5) };
 		divide_tetra(v[0], v[1], v[2], v[3], NDivisions);
@@ -165,10 +162,11 @@ private:
 
 DECLARE_MAIN(Sierpinski3D);
 
+/*
 int main(int argc, char** argv)
 {
 	Sierpinski3D* app = new Sierpinski3D();
 	app->run(app);
 	delete app;
 	return 0;
-} 
+}  */

@@ -108,7 +108,6 @@ public:
 		{
 			GLchar log[1024];
 			glGetShaderInfoLog(s, 1024, NULL, log);
-			fprintf(stderr, "\n\%s\n", log);
 		}
 		glAttachShader(program, s);
 		glDeleteShader(s);

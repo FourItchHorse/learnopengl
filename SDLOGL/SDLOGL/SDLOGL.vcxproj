@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="010420202DSierpinski.cpp" />
     <ClCompile Include="01042020Sierpinski3D.cpp" />
+    <ClCompile Include="02042020Cube.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

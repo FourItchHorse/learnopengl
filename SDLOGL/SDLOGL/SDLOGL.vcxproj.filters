@@ -26,5 +26,8 @@
     <ClCompile Include="01042020Sierpinski3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="02042020Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
