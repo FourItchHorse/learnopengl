@@ -1,3 +1,5 @@
+#define USE_MATH_DEFINES
+#include <cmath>
 #include "OGLScene.h"
 class myCube : public OGLScene 
 {
@@ -93,17 +95,43 @@ class myCube : public OGLScene
 		glPrimitiveRestartIndex(0xFFFF);
 		glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 	}
+
+	void processInput(SDL_Event event) 
+	{
+		if (event.type == SDL_MOUSEMOTION)
+		{
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			camera.x = (float)x / 600;
+			camera.y -= 0.5f;
+			camera.y = (float)y / 450;
+			camera.x -= 0.5f;
+			camera.z = sqrtf(1 + (camera.x * camera.x) - (camera.y * camera.y));
+		
+		}
+		if(event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_SPACE)
+		{
+			
+		}	
+	}
 	void render(float currentTime)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		view_matrix = mat4_lookat(camera * vec3(100.0f, 50.0f, -50.0f), vec3(0.0f, 0.0f, 0.0f),  vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(3, 1, GL_FALSE, view_matrix);
+		//model *= rotate(0.0, 0.0, 1.0, 0.001);
+		//glUniformMatrix4fv(4, 1, GL_FALSE, model);
 		glUseProgram(program);
+	
+		printf("%f, %f, %f\r", camera.x, camera.y, camera.z);
 		glDrawElements(GL_TRIANGLE_STRIP, 17, GL_UNSIGNED_SHORT, NULL);
 	}
 protected:
 	GLuint buffers[2];
 	GLuint program;
 	GLuint vao;
-
+	
+	vec3 camera;
 	mat4 proj_matrix;
 	mat4 view_matrix;
 	mat4 model;

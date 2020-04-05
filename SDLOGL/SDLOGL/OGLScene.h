@@ -73,8 +73,6 @@ public:
 				if (event.type == SDL_QUIT) break;
 			}
 
-			printf("%f\r", time);
-
 		} while (running);
 
 		shutdown();
@@ -104,11 +102,9 @@ public:
 		glShaderSource(s, 1, &source, NULL);
 		glCompileShader(s);
 		glGetShaderiv(s, GL_COMPILE_STATUS, &compiled);
-		if (!compiled)
-		{
 			GLchar log[1024];
 			glGetShaderInfoLog(s, 1024, NULL, log);
-		}
+			printf("\n%s\n", log);
 		glAttachShader(program, s);
 		glDeleteShader(s);
 	}

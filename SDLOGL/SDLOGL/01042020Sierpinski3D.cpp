@@ -137,11 +137,11 @@ class Sierpinski3D : public OGLScene
 		view_matrix = mat4_lookat(vec3(cameraX, cameraY, cameraZ), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
 		glUniformMatrix4fv(3, 1, GL_FALSE, view_matrix);
 
-		model *= rotate(0.0, 1.0, 0.0, 0.001f) *
-			rotate(0.0, 0.0, 1.0, 0.0001f);
+		/*model *= rotate(0.0, 1.0, 0.0, 0.001f) *
+			rotate(0.0, 0.0, 1.0, 0.0001f);i */
 		glUniformMatrix4fv(4, 1, GL_FALSE, model);
 
-		glDrawArrays(GL_POINTS, 0, NumVertices);
+		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 	}
 
 private:
@@ -162,11 +162,11 @@ private:
 
 DECLARE_MAIN(Sierpinski3D);
 
-/*
+
 int main(int argc, char** argv)
 {
 	Sierpinski3D* app = new Sierpinski3D();
 	app->run(app);
 	delete app;
 	return 0;
-}  */
+}  

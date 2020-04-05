@@ -20,13 +20,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="010420202DSierpinski.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="01042020Sierpinski3D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="02042020Cube.cpp">
+    <ClCompile Include="0504TexPractice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

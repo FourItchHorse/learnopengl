@@ -141,9 +141,7 @@
     <ClInclude Include="OGLScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="010420202DSierpinski.cpp" />
-    <ClCompile Include="01042020Sierpinski3D.cpp" />
-    <ClCompile Include="02042020Cube.cpp" />
+    <ClCompile Include="0504TexPractice.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
