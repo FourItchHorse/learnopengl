@@ -1,4 +1,11 @@
 #include <GL/glut.h>
+GLfloat theta;
+void myidle()
+{
+	theta += 0.5;
+	if(theta > 360.0) theta -= 360.0;
+	glutPostRedisplay();
+}
 void display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT);
