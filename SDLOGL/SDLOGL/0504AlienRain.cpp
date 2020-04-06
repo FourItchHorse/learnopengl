@@ -21,10 +21,13 @@ public:
 		glCreateVertexArrays(1, &vao);
 		glBindVertexArray(vao);		
 		
+		glGenTextures(1, &texture);
+		ktx::file::load("", texture);
 	}
 	void render(float currentTime) {}
 protected:
 	GLuint program;
 	GLuint texture;
 	GLuint vao;
+	GLuint tex;
 };

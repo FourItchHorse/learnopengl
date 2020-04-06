@@ -91,12 +91,12 @@ private:
 	GLuint program;
 };
 
-//DECLARE_MAIN(Sierpinski2D);
-/*
+DECLARE_MAIN(Sierpinski2D);
+
 int main(int argc, char** argv) 
 {
 	Sierpinski2D* app = new Sierpinski2D();
 	app->run(app);
 	delete app;
 	return 0;
-} */
+} 
