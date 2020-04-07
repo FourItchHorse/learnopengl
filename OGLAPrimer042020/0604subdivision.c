@@ -11,17 +11,17 @@ void triangle(GLfloat *a, GLfloat *b, GLfloat *c)
 		d = sqrt(a[0]*a[0] + a[1] * a[1]);
 		v[0] = cos(twist*d)*a[0] - sin(twist*d)*a[1];
 		v[1] = sin(twist*d)*a[0] + cos(twist*d)*a[1];
-		glColor3f(1 - v[0], 1 - v[1], d);
+		glColor3f(1 - v[0] + twist, 1 - v[1] - twist, d);
 		glVertex2fv(v);
 		d = sqrt(b[0]*b[0] + b[1] * b[1]);
 		v[0] = cos(twist*d)*b[0] - sin(twist*d)*b[1];
 		v[1] = sin(twist*d)*b[0] + cos(twist*d)*b[1];
-		glColor3f(1 - v[0], 1 - v[1], d);
+		glColor3f(1 - v[0] - twist, 1 - v[1] + twist, d);
 		glVertex2fv(v);
 		d = sqrt(c[0]*b[0] + b[1] * b[1]);
 		v[0] = cos(twist*d)*c[0] - sin(twist*d)*c[1];
 		v[1] = sin(twist*d)*c[0] + cos(twist*d)*c[1];
-		glColor3f(1 - v[0], 1 - v[1], d);
+		glColor3f(1 - v[0], 1 - v[1], d + twist);
 		glVertex2fv(v);
 	glEnd();
 }

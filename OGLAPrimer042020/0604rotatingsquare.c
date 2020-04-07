@@ -1,8 +1,10 @@
 #include <GL/glut.h>
-GLfloat theta;
+#include <math.h>
+#define DEG_TO_RAD 0.017453
+GLfloat theta = 0.0;
 void myidle()
 {
-	theta += 0.5;
+	theta += 0.005;
 	if(theta > 360.0) theta -= 360.0;
 	glutPostRedisplay();
 }
@@ -11,10 +13,10 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBegin(GL_POLYGON);
-		glVertex2f(-0.5, -0.5);
-		glVertex2f(0.5, -0.5);
-		glVertex2f(-0.5, 0.5);
-		glVertex2f(0.5, 0.5);
+		glVertex2f(sin(DEG_TO_RAD*theta), cos(DEG_TO_RAD*theta));
+		glVertex2f(-cos(DEG_TO_RAD*theta), sin(DEG_TO_RAD*theta));
+		glVertex2f(-sin(DEG_TO_RAD*theta), -cos(DEG_TO_RAD*theta));
+		glVertex2f(cos(DEG_TO_RAD*theta), -sin(DEG_TO_RAD*theta));
 	glEnd();
 	glFlush();
 }
@@ -35,6 +37,7 @@ int main (int argc, char** argv)
 	glutInitWindowPosition(0,0);
 	glutCreateWindow("simple");
 	glutDisplayFunc(display);
+	glutIdleFunc(myidle);
 	init();
 	glutMainLoop();
 }
