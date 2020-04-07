@@ -37,12 +37,12 @@ void displays()
 	glBegin(GL_POLYGON);
 		glVertex2f(sin(DEG_TO_RAD * theta), 
 			   cos(DEG_TO_RAD * theta));
-		glVertex2f(-sin(DEG_TO_RAD * theta),
-			    cos(DEG_TO_RAD * theta));
+		glVertex2f(sin(DEG_TO_RAD * theta),
+			    -cos(DEG_TO_RAD * theta));
 		glVertex2f(-sin(DEG_TO_RAD * theta), 
 			   -cos(DEG_TO_RAD * theta));
-		glVertex2f(sin(DEG_TO_RAD * theta), 
-			    -cos(DEG_TO_RAD * theta));
+		glVertex2f(-sin(DEG_TO_RAD * theta), 
+			    cos(DEG_TO_RAD * theta));
 	glEnd();
 	glFlush();
 }
@@ -52,12 +52,12 @@ void displayd()
 	glBegin(GL_POLYGON);
 		glVertex2f(sin(DEG_TO_RAD * theta), 
 			   cos(DEG_TO_RAD * theta));
-		glVertex2f(-sin(DEG_TO_RAD * theta),
-			    cos(DEG_TO_RAD * theta));
+		glVertex2f(sin(DEG_TO_RAD * theta),
+			    -cos(DEG_TO_RAD * theta));
 		glVertex2f(-sin(DEG_TO_RAD * theta), 
 			   -cos(DEG_TO_RAD * theta));
-		glVertex2f(sin(DEG_TO_RAD * theta), 
-			   -cos(DEG_TO_RAD * theta));
+		glVertex2f(-sin(DEG_TO_RAD * theta), 
+			   cos(DEG_TO_RAD * theta));
 	glEnd();
 	glutSwapBuffers();
 }
