@@ -1,0 +1,5 @@
+﻿  1104FirstTri.cpp
+C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\1104FirstTri.cpp(32,44): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\1104FirstTri.cpp(32,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\1104FirstTri.cpp(33,46): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  OGLSB7042020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\Debug\OGLSB7042020.exe
