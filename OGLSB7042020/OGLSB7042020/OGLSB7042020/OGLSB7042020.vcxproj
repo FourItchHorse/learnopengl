@@ -138,15 +138,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="1104FirstTri.cpp" />
+    <ClCompile Include="ClockScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseLib.h" />
     <ClInclude Include="ShaderReader.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="1204triFshader.glsl" />
-    <None Include="1204triVShader.glsl" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

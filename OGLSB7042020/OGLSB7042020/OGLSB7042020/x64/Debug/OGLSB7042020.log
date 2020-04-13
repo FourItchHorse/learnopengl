@@ -6,4 +6,4 @@ C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScen
 C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(64,1): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
 C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(73,24): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
 C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(76,1): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-  OGLSB7042020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\Debug\OGLSB7042020.exe
+  OGLSB7042020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\x64\Debug\OGLSB7042020.exe

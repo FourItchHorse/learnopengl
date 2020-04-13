@@ -4,6 +4,7 @@ debug.log
 *.cpp~
 *.cpp.un~
 *~ 
+*.gch
 *.swp
 *.cpp.un~
 *.obj

@@ -129,4 +129,3 @@ protected:
 	SDL_Window* window;
 	OGLApp* app;
 };
-

@@ -58,7 +58,7 @@ extern "C" {
 				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
 				GLchar* log = new GLchar[len+1];
 				glGetShaderInfoLog(shader, len, &len, log);
-				fprintf(stderr,"SHADER COMPILATION FAILED!\n%s\n", log);
+				fprintf(stderr,"SHADER COMPILATION of %s FAILED!\n%s\n", entry->filename, log);
 				delete[] log;
 #endif
 				return 0;

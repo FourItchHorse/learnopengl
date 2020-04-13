@@ -1,12 +1,9 @@
 #version 450 core
-layout (location = 0) in vec3 position;
+layout (location = 0) in vec2 position;
 layout (location = 1) in vec3 translation;
 layout(location = 2) in vec4 axisAngle;
 mat4 rotation;
 
-   const vec2 vertices[3] = vec2[3](vec2( 0.25, -0.25), 
-									vec2(-0.25, -0.25),
-									vec2(0.25, 0.25));
 mat4 ttranslate(vec3 t)
 {
 	mat4 transMat = mat4(1.0f);
@@ -25,5 +22,5 @@ mat4 qtransform(vec4 q)
 }
 void main (void)
 {
-	gl_Position = vec4(vertices[gl_VertexID], 0.5, 1.0) * qtransform(axisAngle) + vec4(translation, 1.0);
+	gl_Position = vec4(position, 0.5, 1.0)  * qtransform(axisAngle) + vec4(translation, 1.0);
 }

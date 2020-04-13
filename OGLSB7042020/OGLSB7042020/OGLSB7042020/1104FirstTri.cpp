@@ -1,3 +1,5 @@
+#pragma once
+
 #define _USE_MATH_DEFINES 1
 #include "BaseLib.h"
 #include "ShaderReader.h"
@@ -6,6 +8,17 @@ class my_first_tri : public OGLApp
 public:
 	void startup()
 	{
+		glCreateVertexArrays(1, &vao);
+
+		static const GLfloat vertices[] =
+		{
+			0.25, -0.25,
+			-0.25,  -0.25,
+			 0.25,  0.25
+		};
+		glCreateBuffers(1, &vbo);
+		glNamedBufferStorage(vbo, sizeof(vertices), vertices, 0);
+
 		ShaderInfo myShaders[] = {
 			{GL_VERTEX_SHADER, "1204triVshader.glsl"},
 			{GL_FRAGMENT_SHADER, "1204triFshader.glsl"},
@@ -13,9 +26,11 @@ public:
 		};
 		program = LoadShaders(myShaders);
 		glUseProgram(program);
-		glCreateVertexArrays(1, &vao);
+
+
 		glBindVertexArray(vao);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 		glEnableVertexAttribArray(0);
 
 		colAttrib = glGetUniformLocation(program, "inCol");
@@ -30,7 +45,7 @@ public:
 		GLfloat col[] = {1 - redX, 1 - greenY, 0.0};
 		glUniform3fv(colAttrib, 1, col);
 		glVertexAttrib3f(1, cos(currentTime), sin(currentTime), 0.0);
-		glVertexAttrib4f(2, 0.0, 0.0, 1.0, -M_2_PI * currentTime);
+		glVertexAttrib4f(2, 1.0, 0.0, 1.0, M_2_PI * currentTime);
 		glUseProgram(program);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
