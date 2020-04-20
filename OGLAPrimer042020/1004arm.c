@@ -29,7 +29,7 @@ void display(){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    glRotatef(theta[0], 0.0, 1.0, 0.0);
+    	glRotatef(theta[0], 0.0, 1.0, 0.0);
 	glDrawElements(GL_QUADS, 24, GL_UNSIGNED_BYTE, cubeIndices);
 	glRotatef(theta[1], 1.0, 0.0, 0.0);
 	glTranslatef(0.0, 0.0, 3.0);	

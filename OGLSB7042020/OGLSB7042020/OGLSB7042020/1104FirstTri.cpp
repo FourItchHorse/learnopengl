@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #define _USE_MATH_DEFINES 1
@@ -63,3 +64,4 @@ int main (int argc, char** argv)
 	delete scene;
 	return 0;
 } 
+*/

@@ -19,6 +19,12 @@
     <Filter Include="Source Files\1304">
       <UniqueIdentifier>{5c1faf3e-5ffe-4111-aae4-e18671395b1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\1804">
+      <UniqueIdentifier>{23d45c0e-e386-4dde-a153-cff6c8a84507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\2004">
+      <UniqueIdentifier>{dea217b4-baa2-4e17-bcac-1edc7c57f26a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseLib.h">
@@ -35,5 +41,40 @@
     <ClCompile Include="ClockScene.cpp">
       <Filter>Source Files\1304</Filter>
     </ClCompile>
+    <ClCompile Include="1104FirstTri.cpp">
+      <Filter>Source Files\1204Work</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotScene.cpp">
+      <Filter>Source Files\1804</Filter>
+    </ClCompile>
+    <ClCompile Include="2004RobotScene.cpp">
+      <Filter>Source Files\2004</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FaceFShader.glsl">
+      <Filter>Source Files\1304</Filter>
+    </None>
+    <None Include="FaceVShader.glsl">
+      <Filter>Source Files\1304</Filter>
+    </None>
+    <None Include="HandsFshader.glsl">
+      <Filter>Source Files\1304</Filter>
+    </None>
+    <None Include="HandsVShader.glsl">
+      <Filter>Source Files\1304</Filter>
+    </None>
+    <None Include="1204triFshader.glsl">
+      <Filter>Source Files\1204Work</Filter>
+    </None>
+    <None Include="1204triVShader.glsl">
+      <Filter>Source Files\1204Work</Filter>
+    </None>
+    <None Include="robotFrag2004.glsl">
+      <Filter>Source Files\2004</Filter>
+    </None>
+    <None Include="robotVert2004.glsl">
+      <Filter>Source Files\2004</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -15,9 +15,7 @@ extern "C" {
 		FILE* infile = fopen(filename, "rb");
 		if (!infile) 
 		{
-#ifdef _DEBUG
 			fprintf(stderr, "Unable to open file %s!\n", filename);
-#endif
 			return NULL;
 		}
 		fseek(infile, 0, SEEK_END);
@@ -53,17 +51,15 @@ extern "C" {
 			GLint compiled;
 			glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 			if (!compiled) {
-#ifdef _DEBUG
 				GLsizei len;
 				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
 				GLchar* log = new GLchar[len+1];
 				glGetShaderInfoLog(shader, len, &len, log);
 				fprintf(stderr,"SHADER COMPILATION of %s FAILED!\n%s\n", entry->filename, log);
-				delete[] log;
-#endif
 				return 0;
 			}
 			glAttachShader(program, shader);
+			glDeleteShader(shader);
 			++entry;
 		}
 		
@@ -71,14 +67,12 @@ extern "C" {
 		GLint linked;
 		glGetProgramiv(program, GL_LINK_STATUS, &linked);
 		if (!linked) {
-#ifdef _DEBUG
 			GLsizei len;
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
 			GLchar* log = new GLchar[len + 1];
 			glGetProgramInfoLog(program, len, &len, log);
 			fprintf(stderr, "PROGRAM LINKAGE FAILED!\n%s\n", log);
-			delete[] log;
-#endif		
+			 
 			for (entry = shaders; entry->type != GL_NONE; ++entry) {
 				glDeleteShader(entry->shader);
 				entry->shader = 0;

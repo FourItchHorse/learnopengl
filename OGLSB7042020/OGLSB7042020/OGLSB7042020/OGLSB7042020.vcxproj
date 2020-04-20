@@ -138,12 +138,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="1104FirstTri.cpp" />
+    <ClCompile Include="2004RobotScene.cpp" />
     <ClCompile Include="ClockScene.cpp" />
+    <ClCompile Include="RobotScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseLib.h" />
     <ClInclude Include="ShaderReader.h" />
     <ClInclude Include="stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="1204triFshader.glsl" />
+    <None Include="1204triVShader.glsl" />
+    <None Include="robotFrag2004.glsl" />
+    <None Include="robotVert2004.glsl" />
+    <None Include="FaceFShader.glsl" />
+    <None Include="FaceVShader.glsl" />
+    <None Include="HandsFshader.glsl" />
+    <None Include="HandsVShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

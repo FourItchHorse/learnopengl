@@ -1,9 +1,5 @@
-﻿  ClockScene.cpp
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(18,24): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(19,24): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(20,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(21,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(64,1): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(73,24): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\ClockScene.cpp(76,1): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+﻿  2004RobotScene.cpp
+C:\vcpkg\installed\x86-windows\include\vmath.h(5,1): warning C4005: '_USE_MATH_DEFINES': macro redefinition
+C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\2004RobotScene.cpp(1): message : see previous definition of '_USE_MATH_DEFINES'
+C:\vcpkg\installed\x86-windows\include\vmath.h(1022,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   OGLSB7042020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\Debug\OGLSB7042020.exe

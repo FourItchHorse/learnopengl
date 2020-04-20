@@ -1,3 +1,4 @@
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <GL/gl3w.h>
 #include <SDL2/SDL.h>
@@ -56,6 +57,9 @@ public:
 			printf("GL_VERSION: %s\nGL_VENDOR: %s\nGL_RENDERER: %s\n",
 				glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER));
 		}
+
+		printf("GL_VERSION: %s\nGL_VENDOR: %s\nGL_RENDERER: %s\n",
+			glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER));
 
 		startup();
 
