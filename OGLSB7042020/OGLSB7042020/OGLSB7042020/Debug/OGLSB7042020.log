@@ -1,5 +1,4 @@
 ﻿  2004RobotScene.cpp
-C:\vcpkg\installed\x86-windows\include\vmath.h(5,1): warning C4005: '_USE_MATH_DEFINES': macro redefinition
-C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\2004RobotScene.cpp(1): message : see previous definition of '_USE_MATH_DEFINES'
 C:\vcpkg\installed\x86-windows\include\vmath.h(1022,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\OGLSB7042020\2004RobotScene.cpp(35): warning C4715: 'matrix_stack::pop': not all control paths return a value
   OGLSB7042020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7042020\OGLSB7042020\Debug\OGLSB7042020.exe

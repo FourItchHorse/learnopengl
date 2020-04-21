@@ -9,5 +9,5 @@ uniform mat4 mv_matrix;
 void main (void)
 {
     gl_Position = prj_matrix * mv_matrix * position;
-    vs_out.outcol = position * mv_matrix;
+    vs_out.outcol =  position * mv_matrix;
 }
