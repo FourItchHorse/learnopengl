@@ -1,0 +1,3 @@
+﻿  0305GeometryShaderAttempt.cpp
+C:\vcpkg\installed\x64-windows\include\vmath.h(1022,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  OGLSB7052020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7052020\x64\Debug\OGLSB7052020.exe

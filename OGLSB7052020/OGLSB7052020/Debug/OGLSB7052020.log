@@ -1,0 +1,8 @@
+﻿  SpringMassSystem.cpp
+C:\vcpkg\installed\x86-windows\include\vmath.h(1022,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\source\repos\C++\learnopengl\OGLSB7052020\OGLSB7052020\SpringMassSystem.cpp(47,30): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  OGLSB7052020.vcxproj -> C:\source\repos\C++\learnopengl\OGLSB7052020\Debug\OGLSB7052020.exe
